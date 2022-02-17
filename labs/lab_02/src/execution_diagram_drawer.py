@@ -7,11 +7,13 @@ from pdf_exporter import create_pdf
 #       1. python3 ./execution_diagram_drawer.py
 #       2. Input valid Lisp expression, for example:
 #           2.1. (equal (* 4 7) 21)
-#           2.2. ((lambda (a b) (sqrt (+ (* a a) (* b b)))) 3 4)
-#           2.3. ((lambda (l1 l2) (> (length l1) (length l2))) `(1 2) `(2))
+#           2.2. (equal (* 4 7) 3/4)
+#           2.3. ((lambda (a b) (sqrt (+ (* a a) (* b b)))) 3 4)
+#           2.4. ((lambda (l1 l2) (> (length l1) (length l2))) `(1 2) `(2))
+#           2.5. ((lambda (temp) (* 5/9 (- temp 32))) 451)
 
-
-FUNC_REGEX = re.compile(r'(([-+*/><==`]|[a-zA-Z]+)[-_a-zA-Z0-9]*)')
+SYNTAX_REGEX = re.compile(
+    r'((?:[0-9]+)?(?:[-_]+)?[_a-zA-Z0-9]+|[-+]?[0-9]+(?:/[0-9]+)?|[-+*/><`])')
 
 
 def encode_lisp(sexpression):
@@ -28,7 +30,7 @@ def decode_lisp(string):
     string = re.sub(r'\(\s*', '(', string)
     string = re.sub(r'\s*\)', ')', string)
 
-    sexpression = FUNC_REGEX.sub(r'"\1"', string)
+    sexpression = SYNTAX_REGEX.sub(r'"\1"', string)
     sexpression = sexpression.replace(' ', ',')
     sexpression = sexpression.replace('(', '[')
     sexpression = sexpression.replace(')', ']')
@@ -67,10 +69,6 @@ result = []
 
 
 def print_diagram(sexpression, prefix: str = "", context: dict = {}):
-    if type(sexpression) is int or type(sexpression) is float:
-        result.append(f"{prefix}{str(sexpression)} выч. к {str(sexpression)}")
-        return sexpression
-
     if type(sexpression) is str:
         res = call_sbcl_func(sexpression, context)
         result.append(f"{prefix}{str(sexpression)} выч. к {str(res)}")
@@ -116,7 +114,6 @@ if __name__ == "__main__":
     print()
 
     expression = decode_lisp(expression)
-
     print_diagram(expression)
 
     create_pdf(result)

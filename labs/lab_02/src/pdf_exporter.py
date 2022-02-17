@@ -1,11 +1,9 @@
-from reportlab.lib.colors import blue
-from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.units import mm
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-PT_TO_MM = 4.233333333333
+PT_TO_MM = 7
 PT_X_TO_MM = 3
 
 def create_pdf(text, filename="result.pdf"):
