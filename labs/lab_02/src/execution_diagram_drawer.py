@@ -13,20 +13,26 @@ from pdf_exporter import create_pdf
 #           2.5. ((lambda (temp) (* 5/9 (- temp 32))) 451)
 
 SYNTAX_REGEX = re.compile(
-    r'((?:[0-9]+)?(?:[-_]+)?[_a-zA-Z0-9]+|[-+]?[0-9]+(?:/[0-9]+)?|[-+*/><`])')
+    r"([0-9]+[-_a-zA-Z]+[-_a-zA-Z0-9]+|[-_a-zA-Z]+[-_a-zA-Z0-9]*|[-+]?[0-9]+(?:/[0-9]+)?|[-+*/><`'])")
 
 
 def encode_lisp(sexpression):
     func = str(sexpression).replace('[', '(')
     func = func.replace(']', ')')
     func = func.replace(',', '')
+
+    func = func.replace('"\'', '"$!!!$')
     func = func.replace('\'', '')
+    func = func.replace('$!!!$', '\'')
+
+    func = func.replace('"', '')
 
     return func
 
 
 def decode_lisp(string):
     string = string.replace('`', '` ')
+    string = string.replace('\'', '\' ')
     string = re.sub(r'\(\s*', '(', string)
     string = re.sub(r'\s*\)', ')', string)
 
@@ -38,8 +44,8 @@ def decode_lisp(string):
     sexpression = eval(sexpression)
 
     for i in range(len(sexpression)-1, -1, -1):
-        if sexpression[i] == '`':
-            sexpression[i] = '`' + encode_lisp(sexpression[i+1])
+        if sexpression[i] == '`' or sexpression[i] == '\'':
+            sexpression[i] = sexpression[i] + encode_lisp(sexpression[i+1])
             sexpression.pop(i+1)
 
     return sexpression
@@ -116,4 +122,5 @@ if __name__ == "__main__":
     expression = decode_lisp(expression)
     print_diagram(expression)
 
+    result.append("")
     create_pdf(result)
