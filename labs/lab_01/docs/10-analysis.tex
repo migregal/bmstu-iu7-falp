@@ -1,0 +1,314 @@
+\chapter{Практическая часть}
+
+\section{Представить следующие списки в виде списочных ячеек (№1)}
+
+\subsection{\texttt{`(open close halph)}}
+
+\imgw{1-1}{h!}{0.5\textwidth}{Списочные ячейки для \texttt{`(open close halph)}}
+
+\subsection{\texttt{`((open1) (close2) (halph3))}}
+
+\imgw{1-2}{h!}{0.6\textwidth}{Списочные ячейки для \texttt{`((open1) (close2) (halph3))}}
+
+\subsection{\texttt{`((one) for all (and (me (for you))))}}
+
+\imgw{1-3}{h!}{\textwidth}{Списочные ячейки для \texttt{`((one) for all (and (me (for you))))}}
+
+\subsection{\texttt{`((TOOL) (call))}}
+
+\imgw{1-4}{h!}{0.4\textwidth}{Списочные ячейки для \texttt{`((TOOL) (call))}}
+
+\subsection{\texttt{`((TOOL1) ((call)) ((sell)))}}
+
+\imgw{1-5}{h!}{0.6\textwidth}{Списочные ячейки для}
+
+\subsection{\texttt{`(((TOOL) (call)) ((sell)))}}
+
+\imgw{1-6}{h!}{0.6\textwidth}{Списочные ячейки для}
+
+\clearpage
+
+\section{Используя только функции \texttt{CAR} и \texttt{CDR}, написать выражения, возвращающие: (№2)}
+
+\subsection{Второй элемент заданного списка}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Выражение, возвращающее второй элемент заданного списка},
+		language={Lisp},
+	]
+(car (cdr `(A B C D)))
+\end{lstlisting}
+
+\subsection{Третий элемент заданного списка}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Выражение, возвращающее третий элемент заданного списка},
+		language={Lisp},
+	]
+(car (cdr (cdr `(A B C D))))
+\end{lstlisting}
+
+\subsection{Четвертый элемент заданного списка}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Выражение, возвращающее четвертый элемент заданного списка},
+		language={Lisp},
+	]
+(car (cdr (cdr (cdr `(A B C D)))))
+\end{lstlisting}
+
+\section{Что будет в результате вычисления выражений? (№3)}
+
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Выражение 1},
+		language={Lisp},
+	]
+(caadr `((blue cube) (red pyramid)))
+\end{lstlisting}
+
+Результат: \texttt{red}.
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Выражение 2},
+		language={Lisp},
+	]
+(cdar `((abc) (def) (ghi)))
+\end{lstlisting}
+
+Результат: \texttt{Nil}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Выражение 3},
+		language={Lisp},
+	]
+(cadr `((abc) (def) (ghi)))
+\end{lstlisting}
+
+Результат: \texttt{(def)}
+\clearpage
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Выражение 4},
+		language={Lisp},
+	]
+(caddr `((abc) (def) (ghi)))
+\end{lstlisting}
+
+Результат: \texttt{(ghi)}
+
+\section{Что будет в результате вычисления выражении? (№4)}
+
+\begin{table}[ht]
+	\begin{center}
+		\caption{Результаты вычисления выражений}
+		\begin{tabular}{|l|l|}
+			\hline
+			\bfseries Выражение & \bfseries Результат \\\hline
+            \texttt{(list `Fred `and `Wilma)} & \texttt{(Fred and Wilma)} \\\hline
+            \texttt{(cons `Fred `(and Wilma))} & \texttt{(Fred and Wilma)} \\\hline
+            \texttt{(list `Fred `(and Wilma))} & \texttt{(Fred (and Wilma))} \\\hline
+            \texttt{(cons `Fred `(Wilma))} & \texttt{(Fred Wilma)} \\\hline
+            \texttt{(cons Nil Nil)} & \texttt{(Nil)}\\\hline
+            \texttt{(list Nil Nil)} & \texttt{(Nil Nil)}\\\hline
+            \texttt{(cons T Nil)} & \texttt{(T)} \\\hline
+            \texttt{(list T Nil)} & \texttt{(T Nil)} \\\hline
+            \texttt{(cons Nil T)} & \texttt{(Nil . T)}\\\hline
+            \texttt{(list Nil T)} & \texttt{(Nil T)}\\\hline
+            \texttt{(list Nil)} & \texttt{(Nil)}\\\hline
+            \texttt{(cons T (list Nil))} & \texttt{(T Nil)} \\\hline
+            \texttt{(cons `(T) Nil)} & \texttt{((T))} \\\hline
+            \texttt{(list `(T) Nil)} & \texttt{((T) Nil)} \\\hline
+            \texttt{(list `(one two) `(free temp))} & \texttt{((one two) (free temp))} \\\hline
+            \texttt{(cons `(one two) `(free temp))} & \texttt{((one two) free temp)} \\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\clearpage
+    
+\section{Написать lambda-выражение и соответствующую функцию возвращающие список\dots (№5)}
+
+\begin{itemize}
+    \item Функция \texttt{(f ar1 ar2 ar3 ar4)}, возвращающая список следующего\\ вида:\\\texttt{((ar1 ar2) (ar3 ar4))};
+    
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={lambda-выражение},
+		label={lst:2-1},
+		language={Lisp},
+	]
+    (lambda (ar1 ar2 ar3 ar4) 
+        (list (list ar1 ar2) (list ar3 ar4))
+    )
+    \end{lstlisting}
+    
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={функция, использующая \texttt{list}},
+		label={lst:2-2},
+		language={Lisp},
+	]
+    (defun f (ar1 ar2 ar3 ar4) 
+        (list (list ar1 ar2) (list ar3 ar4))
+    )
+    \end{lstlisting}
+
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={функция, использующая \texttt{cons}},
+		label={lst:2-3},
+		language={Lisp},
+	]
+    (defun f (ar1 ar2 ar3 ar4) 
+        (cons 
+            (cons ar1 (cons ar2 Nil)) 
+            (cons 
+                (cons ar3 (cons ar4 Nil)) 
+                Nil
+            )
+        )
+    )
+    \end{lstlisting}
+
+    \item Функция \texttt{(f ar1 ar2)}, возвращающая список следующего вида:\\\texttt{((ar1) (ar3))};
+    
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={lambda-выражение},
+		label={lst:2-4},
+		language={Lisp},
+	]
+    (lambda (ar1 ar2) (list (list ar1) (list ar2)))
+    \end{lstlisting}
+    
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={функция, использующая \texttt{list}},
+		label={lst:2-5},
+		language={Lisp},
+	]
+    (defun f (ar1 ar2) (list (list ar1) (list ar2)))
+    \end{lstlisting}
+    
+    \clearpage
+    
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={функция, использующая \texttt{cons}},
+		label={lst:2-6},
+		language={Lisp},
+	]
+    (defun f (ar1 ar2) 
+        (cons
+            (cons ar1 Nil)
+            (cons (cons ar2 Nil) Nil)
+        )
+    )
+    \end{lstlisting}
+    
+    \item Функция \texttt{(f ar1)}, возвращающая список следующего вида:\\\texttt{(((ar1)))};
+    
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={lambda-выражение},
+		label={lst:2-7},
+		language={Lisp},
+	]
+    (lambda (ar1) (list (list (list ar1))))
+    \end{lstlisting}
+    
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={функция, использующая \texttt{list}},
+		label={lst:2-8},
+		language={Lisp},
+	]
+    (defun f (ar1) (list (list (list ar1))))
+    \end{lstlisting}
+    
+    \begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={функция, использующая \texttt{cons}},
+		label={lst:2-9},
+		language={Lisp},
+	]
+    (defun f (ar1) (cons (cons (cons ar1 Nil) Nil) Nil))
+    \end{lstlisting}
+    
+    \item Представить результаты в виде списочных ячеек:
+    
+    \imgw{2-1}{h!}{0.9\textwidth}{Списочные ячейки для листинга \ref{lst:2-1}}
+    
+    \imgw{2-2}{h!}{\textwidth}{Списочные ячейки для листинга \ref{lst:2-2}}
+    
+    \imgw{2-3}{h!}{\textwidth}{Списочные ячейки для листинга \ref{lst:2-3}}
+    
+    \imgw{2-4}{h!}{\textwidth}{Списочные ячейки для листинга \ref{lst:2-4}}
+    
+    \imgw{2-5}{h!}{\textwidth}{Списочные ячейки для листинга \ref{lst:2-5}}
+    
+    \imgw{2-6}{h!}{\textwidth}{Списочные ячейки для листинга \ref{lst:2-6}}
+    
+    \imgw{2-7}{h!}{\textwidth}{Списочные ячейки для листинга \ref{lst:2-7}}
+    
+    \imgw{2-8}{h!}{\textwidth}{Списочные ячейки для листинга \ref{lst:2-8}}
+
+    \imgw{2-9}{h!}{\textwidth}{Списочные ячейки для листинга \ref{lst:2-9}}    
+    
+\end{itemize}
