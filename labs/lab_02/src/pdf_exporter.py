@@ -11,7 +11,7 @@ def create_pdf(text, filename="result.pdf"):
     w = max([len(i) for i in text])
 
     pdfmetrics.registerFont(
-        TTFont('Fira Code', './Fira_Code_v6.2/TTF/FiraCode-Medium.ttf', 'UTF-8'))
+        TTFont('Fira Code', './fonts/FiraCode-Medium.ttf', 'UTF-8'))
 
     canvas = Canvas(filename, pagesize=(w*PT_X_TO_MM*mm, h*mm))
 
