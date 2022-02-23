@@ -13,8 +13,7 @@ from pdf_exporter import create_pdf
 #           2.5. ((lambda (temp) (* 5/9 (- temp 32))) 451)
 
 SYNTAX_REGEX = re.compile(
-    r"([0-9]+[-_a-zA-Z]+[-_a-zA-Z0-9]+|[-_a-zA-Z]+[-_a-zA-Z0-9]*|[-+]?[0-9]+(?:/[0-9]+)?|[-+*/><`'])")
-
+    r"([0-9]+[-_a-zA-Z]+[-_a-zA-Z0-9]+|[-_a-zA-Z]+[-_a-zA-Z0-9]*|[-+]?[0-9]+(?:[/\.][0-9]+)?|[-+*/><`'])")
 
 def encode_lisp(sexpression):
     func = str(sexpression).replace('[', '(')
