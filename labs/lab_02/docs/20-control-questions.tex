@@ -1,0 +1,118 @@
+\chapter{Контрольный вопросы}
+
+\section{Базис языка}
+
+Базис состоит из:
+\begin{enumerate}
+    \item структуры, атомы;
+    \item встроенные (примитивные) функции (\texttt{atom}, \texttt{eq}, \texttt{cons}, \texttt{car}, \texttt{cdr});
+    \item специальные функции и функционалы, управляющие обработкой структур, представляющих вычислимые выражения (\texttt{quote}, \texttt{cond}, \texttt{lambda}, \texttt{label}, \texttt{eval}).
+\end{enumerate}
+
+\section{Классификация функций}
+
+Функции в \texttt{Lisp} классифицируют следующим образом:
+
+\begin{itemize}
+    \item чистые математические функции;
+    \item рекурсивные функции;
+    \item специальные функции --- формы (сегодня 2 аргумента, завтра - 5);
+    \item псевдофункции (создают эффект на внешнем устройстве);
+    \item функции с вариативными значениями, из которых выбирается 1;
+    \item функции высших порядков --- функционал: используется для синтаксического управления программ (абстракция языка).
+\end{itemize}
+
+По назначению функции разделяются следующим образом:
+
+\begin{itemize}
+    \item конструкторы --- создают значение (\texttt{cons}, например);
+    \item селекторы --- получают доступ по адресу (\texttt{car}, \texttt{cdr});
+    \item предикаты --- возвращают \texttt{Nil}, \texttt{T}.
+    \item функции сравнения -- такие как: \texttt{eq}, \texttt{eql}, \texttt{equal}, \texttt{equalp}.
+\end{itemize}
+
+\section{Способы создания функций}
+
+Функции в \texttt{Lisp} можно задавать следующими способами:
+ 
+\subsection*{\texttt{Lambda}-выражение}
+
+Синтаксис:
+
+\texttt{(lambda <$\lambda$-список> форма)}
+
+Пример:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция определенная Lambda-выражением},
+	label={cc:1},
+	language={Lisp},
+]
+(lambda (a b) (sqrt (+ (* a a) (* b b))))
+\end{lstlisting}
+
+\subsection*{Именованная функция}
+
+Синтаксис:
+
+\texttt{(defun <имя функции> <$\lambda$-выражение>)}
+
+Пример:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Пример определения именованной функции},
+	label={cc:2},
+	language={Lisp},
+]
+(defun hyp (a b) (sqrt (+ (* a a) (* b b))))
+\end{lstlisting}
+
+\section{Функции \texttt{car} и \texttt{cdr}}
+
+\texttt{car} --- функция получения первого элемента точечной пары.
+
+Примеры:
+
+\begin{table}[!ht]
+    \small
+	\begin{center}
+		\begin{tabular}{|c|c|c|}
+            \hline
+            \bfseries S-выражение & \bfseries Результат выполнения \texttt{car} \\\hline
+            (A . B) & A \\\hline
+            ((A . B) . C) & (A . B) \\\hline
+            A & ошибка \\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\texttt{cdr} --- функция получения второго элемента точечной пары.
+
+\begin{table}[!ht]
+    \small
+	\begin{center}
+		\begin{tabular}{|c|c|c|}
+            \hline
+            \bfseries S-выражение & \bfseries Результат выполнения \texttt{cdr} \\\hline
+            (A . B) & B \\ \hline
+            (A . (B . C)) & (B . C) \\\hline
+            A & ошибка \\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\section{Назначение и отличие \texttt{list} от \texttt{cons}}
+
+\texttt{cons} --- функция конструирования точечной пары, на вход получает 2 значения и делает из них точечную пару.
+
+\texttt{list} --- функция конструирования списка. На вход получает произвольное количество элементов и делает из них список.
+
+Вызовы \texttt{(list 1 2 3 4)} и \texttt{(cons 1 (cons 2 (cons 3 (cons 4 Nil))))} эквивалентны, то есть дают одинаковый результат.

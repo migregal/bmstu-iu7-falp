@@ -1,0 +1,274 @@
+\chapter{Практическая часть}
+
+\section{Составить диаграмму вычисления следующих выражений}
+
+\subsection*{\texttt{(equal 3 (abs -3))}}
+
+\imgw{1-1}{h!}{0.4\textwidth}{Диаграмма выполнения для \texttt{(equal 3 (abs -3))}}
+
+\subsection*{\texttt{(equal (+ 1 2) 3)}}
+
+\imgw{1-2}{h!}{0.4\textwidth}{Диаграмма выполнения для \texttt{(equal (+ 1 2) 3)}}
+
+\clearpage
+
+\subsection*{\texttt{(equal (* 4 7) 21)}}
+
+\imgw{1-3}{h!}{0.4\textwidth}{Диаграмма выполнения для \texttt{(equal (* 4 7) 21)}}
+
+\subsection*{\texttt{(equal (* 2 3) (+ 7 2))}}
+
+\imgw{1-4}{h!}{0.4\textwidth}{Диаграмма выполнения для \texttt{(equal (* 2 3) (+ 7 2))}}
+
+\clearpage
+
+\subsection*{\texttt{(equal (- 7 3) (* 3 2))}}
+
+\imgw{1-5}{h!}{0.4\textwidth}{Диаграмма выполнения для \texttt{(equal (- 7 3) (* 3 2))}}
+
+\subsection*{\texttt{(equal (abs (- 2 4)) 3))}}
+
+\imgw{1-6}{h!}{0.4\textwidth}{Диаграмма выполнения для \texttt{(equal (abs (- 2 4)) 3))}}
+
+\clearpage
+
+\section{Написать функцию, вычисляющую гипотенузу прямоугольного
+треугольника по заданным катетам и составить диаграмму её вычисления}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция, вычисляющая гипотенузу прямоугольного треугольника},
+	label={lst:2-1},
+	language={Lisp},
+]
+(lambda (a b) (sqrt (+ (* a a) (* b b))))
+\end{lstlisting}
+
+На Рисунке \ref{img:2-1} приведена диаграмма выполнения данной функции с фактическими параметрами \texttt{3} и \texttt{4}.
+
+\imgw{2-1}{h!}{0.75\textwidth}{Диаграмма выполнения для Листинга \ref{lst:2-1}}
+
+\clearpage
+
+\section{Написать функцию, вычисляющую объем параллелепипеда по 3-м его сторонам, и составить диаграмму ее вычисления}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция, вычисляющая объем параллелепипеда},
+	label={lst:3-1},
+	language={Lisp},
+]
+(lambda (a b c) (* a b c))
+\end{lstlisting}
+
+На Рисунке \ref{img:3-1} приведена диаграмма выполнения данной функции с фактическими параметрами \texttt{2}, \texttt{3} и \texttt{4}.
+
+\imgw{3-1}{h!}{0.7\textwidth}{Диаграмма выполнения для Листинга \ref{lst:3-1}}
+
+\section{Каковы результаты вычисления следующих выражений?}
+
+В Таблице \ref{tbl:4-1} приведены результаты вычисления выражений, а так же варианты устранения возникших ошибок.
+
+\begin{landscape}
+\begin{table}[!ht]
+    \small
+	\begin{center}
+		\caption{Результаты вычисления выражений}
+		\label{tbl:4-1}
+		\begin{tabular}{|l|l|l|}
+			\hline
+			\bfseries Выражение & \bfseries Результат & \bfseries Исправление \\\hline
+			& & \\ 
+            \texttt{(list `a c)} & Несвязная переменная \texttt{c} &
+            \texttt{(list `a `c)} \\
+            & & \\\hline
+            
+            & & \texttt{(cons `(a b) `c)} \\\cline{3-3} 
+            & Неверное число аргументов:  & \texttt{(cons `a `(b c))} \\\cline{3-3} 
+            \texttt{(cons `a `b `c)}  & функция \texttt{cons} ожидает 2 & \texttt{(cons `b `c)} \\\cline{3-3} 
+            & аргумента, а передано 3. & \texttt{(cons `a `c)} \\\cline{3-3} 
+            & & \texttt{(cons `a `b)} \\\hline 
+            
+            & & \\ 
+            \texttt{(cons `a (b c))} & Несвязная переменная \texttt{c} & \texttt{(cons `a `(b c))} \\
+            & & \\\hline
+            
+            & & \\ 
+            \texttt{(list `a (b c))} & Несвязная переменная \texttt{c} & \texttt{(list `a `(b c))} \\
+            & & \\\hline 
+            
+            & & \\ 
+            \texttt{(cons `a `(b c))} &\texttt{(a b c)} & Не требуется \\
+            & & \\\hline
+            
+            & & \\ 
+            \texttt{(list a `(b c))} & Несвязная переменная \texttt{a} & \texttt{(list `a `(b c))} \\
+            & & \\\hline 
+            
+            & & \\ 
+            \texttt{(caddy (1 2 3 4 5))} & & \texttt{(caddr `(1 2 3 4 5))} \\
+            & & \\\hline
+            
+            & & \\ 
+            & Ошибка вычисления. Чистая   & \\
+            \texttt{(list (+ 1 `(length `(1 2 3))))} & математическая функция \texttt{+} ожидает  & \texttt{(list (+ 1 (length `(1 2 3))))} \\ 
+            & фактический параметр \texttt{NUMBER} & \\
+            & & \\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+\end{landscape}
+
+\section{Написать функцию от двух списков-аргументов, которая возвращает Т, если первый аргумент имеет большую длину}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция для сравнения длин списков},
+	label={lst:5-1},
+	language={Lisp},
+]
+(lambda (l1 l2) (> (length l1) (length l2)))
+\end{lstlisting}
+
+\section{Каковы результаты вычисления следующих выражений?}
+
+В таблице \ref{tbl:6-1} приведены результаты вычисления соответствующих выражений.
+
+\begin{table}[!ht]
+    \small
+	\begin{center}
+		\caption{Результаты вычисления выражений}
+		\label{tbl:6-1}
+		\begin{tabular}{|l|l|}
+			\hline
+			\bfseries Выражение & \bfseries Результат \\\hline
+            \texttt{(cons 3 (list 5 6))} & \texttt{(3 5 6)} \\\hline
+            \texttt{(cons 3 '(list 5 6))} & \texttt{(3 list 5 6)} \\\hline
+            \texttt{(list 3 'from 9 'lives (- 9 3))} & \texttt{(3 from 9 lives 6)} \\\hline
+            \texttt{(+ (length for 2 too)) (car '(21 22 23)))} & Несвязная переменная \texttt{for} \\\hline
+            \texttt{(cdr '(cons is short for ans))} & \texttt{(is short for ans)} \\\hline
+            \texttt{(car (list one two))} & Несвязная переменная \texttt{one} \\\hline
+            \texttt{(car (list 'one 'two))} & \texttt{one} \\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\section{Какие результаты вычисления следующих выражений?}
+
+Дана функция
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция, заданная в условии},
+	label={lst:7-1},
+	language={Lisp},
+]
+(defun mystery (x) (list (second x) (first x)))
+\end{lstlisting}
+
+В таблице \ref{tbl:7-1} приведены результаты вычисления соответствующих выражений.
+
+\begin{table}[!ht]
+    \small
+	\begin{center}
+		\caption{Результаты вычисления выражений}
+		\label{tbl:7-1}
+		\begin{tabular}{|l|l|}
+			\hline
+			\bfseries Выражение & \bfseries Результат \\\hline
+            \texttt{(mystery (one two))} & Несвязная переменная \texttt{two} \\\hline
+            \texttt{(mystery one 'two))} & Несвязная переменная \texttt{one} \\\hline
+            \texttt{(mystery (last one two))} & Несвязная переменная \texttt{one} \\\hline
+            \texttt{(mystery free)} & Несвязная переменная \texttt{free} \\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\section{Написать функцию, которая переводит температуру в системе Фаренгейта температуру по Цельсию}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция, которая переводит температуру в системе Фаренгейта температуру по Цельсию},
+	label={lst:8-1},
+	language={Lisp},
+]
+(lambda (temp) (* 5/9 (- temp 32)))
+\end{lstlisting}
+
+\section{Что получится при вычисления каждого из выражений?}
+
+В таблице \ref{tbl:9-1} приведены результаты вычисления соответствующих выражений.
+
+\begin{table}[!ht]
+    \small
+	\begin{center}
+		\caption{Результаты вычисления выражений}
+		\label{tbl:9-1}
+		\begin{tabular}{|l|l|}
+			\hline
+			\bfseries Выражение & \bfseries Результат \\\hline
+            \texttt{(list 'cons t NIL)} & \texttt{(cons t NIL)} \\\hline
+            \texttt{(eval (list 'cons t NIL))} & \texttt{(T)} \\\hline
+            \texttt{(eval (eval (list 'cons t NIL)))} & Неопределенная функция \texttt{T} \\\hline
+            \texttt{(apply \#cons "(t NIL))} & Неверный формат записи компл. числа \\\hline
+            \texttt{(eval NIL)} & \texttt{NIL} \\\hline
+            \texttt{(list 'eval NIL) } & \texttt{(eval NIL)} \\\hline
+            \texttt{(eval (list 'eval NIL))} & \texttt{NIL} \\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\clearpage
+
+\section{Дополнительно}
+
+\subsection*{Написать функцию, вычисляющую катет по заданной гипотенузе и другому катету прямоугольного треугольника, и составить диаграмму ее вычисления}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция, вычисляющая катет прямоугольного треугольника},
+	label={lst:10-1},
+	language={Lisp},
+]
+(lambda (c a) (sqrt (- (* c c) (* a a))))
+\end{lstlisting}
+
+На Рисунке \ref{img:10-1} приведена диаграмма выполнения данной функции с фактическими параметрами \texttt{5} и \texttt{3}.
+
+\imgw{10-1}{h!}{0.75\textwidth}{Диаграмма выполнения для Листинга \ref{lst:10-1}}
+
+\subsection*{Написать функцию, вычисляющую площадь трапеции по ее основаниям и высоте, и составить диаграмму ее вычисления}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция, вычисляющая площадь трапеции},
+	label={lst:10-2},
+	language={Lisp},
+]
+(lambda (a b h) (* 1/2 (+ a b) h))
+\end{lstlisting}
+
+На Рисунке \ref{img:10-2} приведена диаграмма выполнения данной функции с фактическими параметрами \texttt{4}, \texttt{2} и \texttt{5}.
+
+\imgw{10-2}{h!}{0.75\textwidth}{Диаграмма выполнения для Листинга \ref{lst:10-2}}
