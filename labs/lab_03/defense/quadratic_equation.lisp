@@ -1,0 +1,36 @@
+(defun compl-to-string (number)
+    (format Nil "(~F~@Fi)"
+        (realpart number)
+        (imagpart number)
+    )
+)
+
+(defun solve(a b c)
+    (let
+        (
+            (D (- (* b b) (* 4 a c)))
+        )
+        (if (= a 0)
+            (if (= 0 b)
+                (if (= 0 c)
+                    (format Nil "Решением уравнения может быть любое значение X, так как 0 = 0")
+                    (format Nil "Неверно заданное уравнение")
+                )
+                (format Nil "Решение уравнения (линейный случай): ~F" (/ (* -1 c) b))
+            )
+            (if (= D 0)
+                (format Nil "Решения уравнения совпадают и равны: ~F" (/ (* -1 b) 2 a))
+                (if (> D 0)
+                    (format Nil "Решения уравнения: ~F и ~F"
+                        (/ (- (* -1 b) (sqrt D)) 2 a)
+                        (/ (+ (* -1 b) (sqrt D)) 2 a)
+                    )
+                    (format Nil "Комплексные решения уравнения: ~a и ~a"
+                        (compl-to-string  (/ (- (* -1 b) (sqrt D)) 2 a))
+                        (compl-to-string  (/ (+ (* -1 b) (sqrt D)) 2 a))
+                    )
+                )
+            )
+        )
+    )
+)

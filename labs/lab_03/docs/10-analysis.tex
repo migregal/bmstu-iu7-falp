@@ -1,0 +1,276 @@
+\chapter{Практическая часть}
+
+\section{Написать функцию, которая принимает целое число и возвращает первое четное число, не меньшее аргумента}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, возвращающая первое четное число, не меньшее аргумента},
+	label={lst:1-1},
+	language={Lisp},
+]
+(defun first-even-ge (arg) (if (evenp arg) arg (+ arg 1)))
+\end{lstlisting}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция, возвращающая первое четное число, не меньшее аргумента},
+	label={lst:1-1-2},
+	language={Lisp},
+]
+(lambda (arg) (if (evenp arg) arg (+ arg 1)))
+\end{lstlisting}
+
+\section{Написать функцию, которая принимает число и возвращает число того же знака, но с модулем на 1 больше модуля аргумента}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, увеличивающая аргумент на 1 по модулю},
+	label={lst:2-1},
+	language={Lisp},
+]
+(defun module-plus (arg) (+ arg (if (< arg 0) -1 1)))
+\end{lstlisting}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lmabda-функция, увеличивающая аргумент на 1 по модулю},
+	label={lst:2-1-2},
+	language={Lisp},
+]
+(lambda (arg) (+ arg (if (< arg 0) -1 1)))
+\end{lstlisting}
+
+\section{Написать функцию, которая принимает два числа и возвращает список из этих чисел, расположенный по возрастанию}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, упорядочивающая аргументы по возрастанию},
+	label={lst:3-1},
+	language={Lisp},
+]
+(defun growing-lst (a b)
+  (if (< a b) (list a b) (list b a)))
+\end{lstlisting}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lambda-функция, упорядочивающая аргументы по возрастанию},
+	label={lst:3-1-2},
+	language={Lisp},
+]
+(lambda (a b) (if (< a b) (list a b) (list b a)))
+\end{lstlisting}
+
+\section{Написать функцию, которая принимает три числа и возвращает Т только тогда, когда первое число расположено между вторым и третьим}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция проверки принадлежности интервалу},
+	label={lst:4-1},
+	language={Lisp},
+]
+(defun pred (a b c) (and (> a b) (< a c)))
+\end{lstlisting}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Lamba-функция проверки принадлежности интервалу},
+	label={lst:4-1-2},
+	language={Lisp},
+]
+(lambda (a b c) (and (> a b) (< a c)))
+\end{lstlisting}
+
+\section{Каков результат вычисления следующих выражений}
+
+В Таблице \ref{tbl:5-1} приведены результаты вычисления выражений, а так же варианты устранения возникших ошибок.
+
+\begin{table}[!ht]
+	\begin{center}
+		\caption{Результаты вычисления выражений}
+		\label{tbl:5-1}
+		\begin{tabular}{|l|l|}
+			\hline
+			\bfseries Выражение & \bfseries Результат\\\hline
+            \texttt{(and 'fee 'fie 'foe)} & \texttt{foe}\\\hline
+            \texttt{(or 'fee 'fie 'foe)} & \texttt{fee}\\\hline
+            \texttt{(or nil 'fie 'foe)} & \texttt{fie}\\\hline
+            \texttt{(and nil 'fie 'foe)} & \texttt{nil}\\\hline
+            \texttt{(and (equal 'abc 'abc) 'yes)} & \texttt{yes}\\\hline
+            \texttt{(or (equal 'abc 'abc) 'yes)} & \texttt{T}\\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+
+\section{Написать предикат, который принимает два числа-аргумента и возвращает Т, если первое число не меньше второго}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Предикат сравнения чисел},
+	label={lst:6-1},
+	language={Lisp},
+]
+(defun predicate-2 (a b) (>= a b))
+\end{lstlisting}
+
+\section{Какой из следующих двух вариантов предиката ошибочен и почему}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Первая реализация предиката},
+	label={lst:7-1},
+	language={Lisp},
+]
+(defun pred1 (x) (and (numberp x) (plusp x))) 
+\end{lstlisting}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Вторая реализация предиката},
+	label={lst:7-2},
+	language={Lisp},
+]
+(defun pred2 (x) (and (plusp x) (numberp x)))
+\end{lstlisting}
+
+\textbf{Ошибочен второй вариант}, потому что функция \texttt{plusp} принимает на вход один аргумент типа \texttt{number} и проверять, является ли аргумент числом, после выполнения функции \texttt{plusp} не имеет смысла, причем аргументы, не являющиеся числами, будут вызывать ошибку, в то время как 1 вариант будет работать с любым аргументом и возвращать \texttt{T} для положительных чисел.
+
+
+\section{Решить задачу 4, используя для ее решения конструкции IF, COND, AND/OR}
+
+Используя \texttt{if}:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация с использованием \texttt{if}},
+	label={lst:8-1},
+	language={Lisp},
+]
+(defun pred (a b c) (if (> a b) (< a c) Nil))
+\end{lstlisting}
+
+Используя \texttt{cond}:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация с использованием \texttt{cond}},
+	label={lst:8-2},
+	language={Lisp},
+]
+(defun pred (a b c)
+    (cond ((> a b) (cond ((< a c) T) 
+                         (T Nil)))
+          (T Nil))
+)
+\end{lstlisting}
+
+Используя \texttt{and/or}:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация с использованием \texttt{and/or}},
+	label={lst:8-3},
+	language={Lisp},
+]
+(defun pred (a b c) (and (> a b) (< a c)))
+\end{lstlisting}
+
+\section{Переписать функцию how-alike, приведенную в лекции и использующую COND, используя
+только конструкции IF, AND/OR}
+
+Используя \texttt{cond}:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация с использованием \texttt{cond}},
+	label={lst:9-1},
+	language={Lisp},
+]
+(defun how-alike (x y)
+  (cond ((or(= x y) (equal x y)) 'the_same)
+        ((and (oddp x) (oddp y)) 'both_odd) 
+        ((and (evenp x) (evenp y)) 'both_even) 
+        (T 'diff)))
+\end{lstlisting}
+
+Используя \texttt{if}:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация с использованием \texttt{if}},
+	label={lst:9-2},
+	language={Lisp},
+]
+(defun how-alike-if (x y)
+  (if (or (= x y) (equal x y)) 'the_same
+    (if (and (oddp x) (oddp y)) 'both_odd
+      (if (and (evenp x) (evenp y)) 'both_even
+        'diff))))
+\end{lstlisting}
+
+Используя \texttt{and/or}:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация с использованием \texttt{if}},
+	label={lst:9-3},
+	language={Lisp},
+]
+(defun how-alike-and-or (x y)
+  (or (and (or (= x y) (equal x y)) 'the_same)
+        (and (and (oddp x) (oddp y)) 'both_odd)
+        (and (and (evenp x) (evenp y)) 'both_even) 
+        'diff))
+\end{lstlisting}

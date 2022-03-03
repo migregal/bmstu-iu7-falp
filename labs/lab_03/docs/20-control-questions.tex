@@ -1,0 +1,274 @@
+\chapter{Контрольный вопросы}
+
+\section{Базис языка}
+
+Базис состоит из:
+\begin{enumerate}
+    \item структуры, атомы;
+    \item встроенные (примитивные) функции (\texttt{atom}, \texttt{eq}, \texttt{cons}, \texttt{car}, \texttt{cdr});
+    \item специальные функции и функционалы, управляющие обработкой структур, представляющих вычислимые выражения (\texttt{quote}, \texttt{cond}, \texttt{lambda}, \texttt{label}, \texttt{eval}).
+\end{enumerate}
+
+\section{Классификация функций}
+
+Функции в \texttt{Lisp} классифицируют следующим образом:
+
+\begin{itemize}
+    \item чистые математические функции;
+    \item рекурсивные функции;
+    \item специальные функции --- формы (сегодня 2 аргумента, завтра - 5);
+    \item псевдофункции (создают эффект на внешнем устройстве);
+    \item функции с вариативными значениями, из которых выбирается 1;
+    \item функции высших порядков --- функционал: используется для синтаксического управления программ (абстракция языка).
+\end{itemize}
+
+По назначению функции разделяются следующим образом:
+
+\begin{itemize}
+    \item конструкторы --- создают значение (\texttt{cons}, например);
+    \item селекторы --- получают доступ по адресу (\texttt{car}, \texttt{cdr});
+    \item предикаты --- возвращают \texttt{Nil}, \texttt{T}.
+    \item функции сравнения -- такие как: \texttt{eq}, \texttt{eql}, \texttt{equal}, \texttt{equalp}.
+\end{itemize}
+
+\section{Способы создания функций}
+
+Функции в \texttt{Lisp} можно задавать следующими способами:
+
+\subsection*{\texttt{Lambda}-выражение}
+
+Синтаксис:
+
+\texttt{(lambda <$\lambda$-список> форма)}
+
+Пример:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция определенная Lambda-выражением},
+	label={cc:1},
+	language={Lisp},
+]
+(lambda (a b) (sqrt (+ (* a a) (* b b))))
+\end{lstlisting}
+
+\subsection*{Именованая функция}
+
+Синтаксис:
+
+\texttt{(defun <имя функции> <$\lambda$-выражение>)}
+
+Пример:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция определенная Lambda-выражением},
+	label={cc:2},
+	language={Lisp},
+]
+(defun hyp (a b) (sqrt (+ (* a a) (* b b))))
+\end{lstlisting}
+
+\section{Работа функций \texttt{and}, \texttt{or}, \texttt{if}, \texttt{cond}}
+
+\subsection{Функция \texttt{and}}
+
+Синтаксис:
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={функция \texttt{and}},
+	label={сс:3-1},
+	language={Lisp},
+]
+(and expression-1 expression-2 ... expression-n)
+\end{lstlisting}
+
+Функция возвращает первое expression, результат вычисления которого = \texttt{Nil}. Если все не \texttt{Nil}, то возвращается результат вычисления последнего выражения.
+
+\clearpage
+
+Примеры:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={пример использования \texttt{and}},
+	label={с:3-2},
+	language={Lisp},
+]
+(and 1 Nil 2)
+\end{lstlisting}
+
+Результат: \texttt{Nil}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={пример использования \texttt{and}},
+	label={с:3-3},
+	language={Lisp},
+]
+(and 1 2 3)
+\end{lstlisting}
+
+Результат: 3
+
+\subsection{Функция \texttt{or}}
+
+Синтаксис:
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={функция \texttt{or}},
+	label={с:3-4},
+	language={Lisp},
+]
+(or expression-1 expression-2 ... expression-n)
+\end{lstlisting}
+
+Функция возвращает первое expression, результат вычисления которого не \texttt{Nil}. Если все \texttt{Nil}, то возвращается \texttt{Nil}.
+
+Примеры:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={пример использования \texttt{or}},
+	label={с:3-5},
+	language={Lisp},
+]
+(or Nil Nil 2)
+\end{lstlisting}
+
+Результат: 2
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={пример использования \texttt{or}},
+	label={с:3-6},
+	language={Lisp},
+]
+(or 1 2 3)
+\end{lstlisting}
+
+Результат: 1
+
+\subsection{Функция \texttt{if}}
+
+Синтаксис:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={функция \texttt{if}},
+	label={с:3-7},
+	language={Lisp},
+]
+(if condition t-expression f-expression)
+\end{lstlisting}
+
+Если вычисленный предикат не \texttt{Nil}, то выполняется \texttt{t-expression}, иначе - \texttt{f-expression}.
+
+Примеры:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={пример использования \texttt{if}},
+	label={с:3-8},
+	language={Lisp},
+]
+(if Nil 2 3)
+\end{lstlisting}
+
+Результат: 3
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={пример использования \texttt{if}},
+	label={с:3-9},
+	language={Lisp},
+]
+(if 0 2 3)
+\end{lstlisting}
+
+Результат: 2
+
+\subsection{Функция \texttt{cond}}
+
+Синтаксис:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция \texttt{cond}},
+	label={с:3-10},
+	language={Lisp},
+]
+(cond 
+  (condition-1 expression-1)
+  (condition-2 expression-2)
+  ...
+  (condition-n expression-n))
+\end{lstlisting}
+
+По порядку вычисляются и проверяются на равенство с \texttt{Nil} предикаты. Для первого предиката, который не равен \texttt{Nil}, вычисляется находящееся с ним в списке выражение и возвращается его значение. Если все предкаты вернут \texttt{Nil}, то и \texttt{cond} вернет \texttt{Nil}.
+
+Примеры:
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Пример использования \texttt{cond}},
+	label={с:3-11},
+	language={Lisp},
+]
+(cond (Nil 1) (2 3))
+\end{lstlisting}
+
+Результат: 3
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Пример использования \texttt{cond}},
+	label={с:3-12},
+	language={Lisp},
+]
+(cond (Nil 1) (Nil 2))
+\end{lstlisting}
+
+Результат: \texttt{Nil}
