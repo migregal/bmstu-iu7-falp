@@ -1,4 +1,7 @@
 (defun insert (lst ins)
   (cond
-   ((member ins lst :test `equal) lst)
-   (T (cons ins lst))))
+    ((not lst) nil)
+    ((not (listp lst)) lst)
+    ((not ins) lst)
+    ((member ins lst :test `equal) lst)
+    (T (cons ins lst))))
