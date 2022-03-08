@@ -11,5 +11,6 @@
     (T (mapcar
       #'(lambda (el)
           (cond ((listp el) (compl-mult-all-numbers mult el))
-                (T (* el mult))))
+                ((numberp el) (* el mult))
+                (T el)))
       lst))))

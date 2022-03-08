@@ -33,12 +33,15 @@
   (fiveam:is (equal (compl-mult-all-numbers 2 '(1 2 3)) '(2 4 6) )))
 
 (fiveam:test compl-mult-all-numbers-tests-5
-  (fiveam:is (equal (compl-mult-all-numbers 2 '((1 2) 3)) '((2 4) 6) )))
+  (fiveam:is (equal (compl-mult-all-numbers 2 '(1 2 a)) '(2 4 a) )))
 
 (fiveam:test compl-mult-all-numbers-tests-6
-  (fiveam:is (equal (compl-mult-all-numbers 2 '(1 (1 2) 3)) '(2 (2 4) 6) )))
+  (fiveam:is (equal (compl-mult-all-numbers 2 '((1 2) 3)) '((2 4) 6) )))
 
 (fiveam:test compl-mult-all-numbers-tests-7
+  (fiveam:is (equal (compl-mult-all-numbers 2 '(1 (1 2) 3)) '(2 (2 4) 6) )))
+
+(fiveam:test compl-mult-all-numbers-tests-8
   (fiveam:is (equal (compl-mult-all-numbers 2 '((1) (1 2) (3) (4 5 6))) '((2) (2 4) (6) (8 10 12)) )))
 
 ; compl-mult-all-numbers
