@@ -1,0 +1,89 @@
+\chapter{Лекция 4}
+
+\section{Примеры использования функционаов}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Перевод списка с дублями во множество},
+		language={Lisp},
+	]
+(defun consist-of (lst)
+    (if (member (car lst) (cdr lst) :test 'equal) 1 0))
+
+(defun all-last-element (lst)
+    (if (eql (consist-of lst) 0) (list (car lst)) ()))
+
+(defun collection-to-set (lst)
+    (mapcon #'all-last-element lst))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Декартово произведение элементов списка},
+		language={Lisp},
+	]
+(defun decart (lstX lstY)
+    (mapcan #'(lambda (x)
+                (mapcar #'(lambda (y)
+                            (list x y)) lstY))
+                                        lstX))
+\end{lstlisting}
+
+\section{Рекурсия}
+
+\begin{itemize}
+    \item простая рекурсия -- рек. вызов в теле функции встречается 1 раз;
+    \item рекурсия первого порядка -- рек. вызов в теле функции встречается несколько раз;
+    \item взаимная рекурсия -- используются несколько рекурсивных функций, вызывающих друг-друга.
+\end{itemize}
+
+\section{Примеры использования рекурсии}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Проверка присутствия элемента в списке},
+		language={Lisp},
+	]
+(defun my-member (el lst)
+    (cond ((equal el (car lst)) t)
+          ((null lst) nil)
+          (t (my-member el (cdr lst)))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Реализация функции reverse},
+		language={Lisp},
+	]
+(defun my-reverse (lst)
+    (cond ((null lst) lst)
+          (t (append (my-reverse (cdr lst)) (cons (car lst) Nil)))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Оптимизированная реализация функции reverse},
+		language={Lisp},
+	]
+(defun move-to (lst result)
+    (cond ((null lst) result)
+          (t (move-to (cdr lst) (cons (car lst) result)))))
+
+(defun my-reverse (lst)
+    (move-to lst ()))
+\end{lstlisting}
