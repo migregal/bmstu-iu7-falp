@@ -5,10 +5,10 @@
 ; insert
 
 (fiveam:test insert-tests-1
-  (fiveam:is (equal (insert nil nil) nil )))
+  (fiveam:is (equal (insert nil nil) '(nil) )))
 
 (fiveam:test insert-tests-2
-  (fiveam:is (equal (insert '(1 2 3) nil) '(1 2 3) )))
+  (fiveam:is (equal (insert '(1 2 3) nil) '(nil 1 2 3) )))
 
 (fiveam:test insert-tests-3
   (fiveam:is (equal (insert '((1 2) (3 4)) '(1 2)) '((1 2) (3 4)) )))

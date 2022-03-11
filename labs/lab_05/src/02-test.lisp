@@ -19,30 +19,6 @@
 (fiveam:test equal-sets-subset-5
   (fiveam:is (set-equal-subset `(1 a a a) `(1 a 1 1))))
 
-(fiveam:test not-sets-subset-1
-  (fiveam:is (not (set-equal-subset 1 2))))
-
-(fiveam:test not-sets-subset-2
-  (fiveam:is (not (set-equal-subset `a 2))))
-
-(fiveam:test not-sets-subset-3
-  (fiveam:is (not (set-equal-subset 1 `b))))
-
-(fiveam:test not-sets-subset-4
-  (fiveam:is (not (set-equal-subset `(1) 2))))
-
-(fiveam:test not-sets-subset-5
-  (fiveam:is (not (set-equal-subset `(a) 2))))
-
-(fiveam:test not-sets-subset-6
-  (fiveam:is (not (set-equal-subset `(1) `a))))
-
-(fiveam:test not-sets-subset-7
-  (fiveam:is (not (set-equal-subset 1 `(2)))))
-
-(fiveam:test not-sets-subset-8
-  (fiveam:is (not (set-equal-subset 1 `(b)))))
-
 (fiveam:test not-equal-sets-subset-1
   (fiveam:is (not (set-equal-subset `(1) `(2)))))
 
@@ -78,28 +54,13 @@
   (fiveam:is (set-equal `(1 a a a) `(1 a 1 1))))
 
 (fiveam:test not-sets-1
-  (fiveam:is (not (set-equal 1 2))))
-
-(fiveam:test not-sets-2
-  (fiveam:is (not (set-equal `a 2))))
-
-(fiveam:test not-sets-3
-  (fiveam:is (not (set-equal 1 `b))))
-
-(fiveam:test not-sets-4
   (fiveam:is (not (set-equal `(1) 2))))
 
-(fiveam:test not-sets-5
+(fiveam:test not-sets-2
   (fiveam:is (not (set-equal `(a) 2))))
 
-(fiveam:test not-sets-6
+(fiveam:test not-sets-3
   (fiveam:is (not (set-equal `(1) `a))))
-
-(fiveam:test not-sets-7
-  (fiveam:is (not (set-equal 1 `(2)))))
-
-(fiveam:test not-sets-8
-  (fiveam:is (not (set-equal 1 `(b)))))
 
 (fiveam:test not-equal-sets-1
   (fiveam:is (not (set-equal `(1) `(2)))))

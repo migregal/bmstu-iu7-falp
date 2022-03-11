@@ -1,17 +1,13 @@
-(defun set-values (lst i1 i2 v1 v2)
+(defun replace-nth (lst i newelem)
   (cond
-    ((not lst) nil)
-    ((and (minusp i1) (minusp i2)) lst)
-    (T
-      (cons
-        (cond
-          ((zerop i1) v1)
-          ((zerop i2) v2)
-          (T (car lst)))
-        (set-values (cdr lst) (- i1 1) (- i2 1) v1 v2)))))
+    ((null lst) nil)
+    ((zerop i) (cons newelem (cdr lst)))
+    ((cons (car lst) (replace-nth (cdr lst) (- i 1) newelem)))))
 
 (defun swap-two-ellement (i1 i2 lst)
   (cond
-    ((not (listp lst)) lst)
     ((= i1 i2) lst)
-    (T (set-values lst i1 i2 (nth i2 lst) (nth i1 lst)))))
+    ((replace-nth
+      (replace-nth lst i2 (nth i1 lst))
+      i1
+      (nth i2 lst)))))
