@@ -1,0 +1,180 @@
+\chapter{Лекция 5}
+
+\section{Хвостовая рекурсия}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Общий вид хвостовой рекурсии},
+		language={Lisp},
+	]
+(defun fun (x)
+  (cond
+    (end_test end_value)
+    (t (fun changed_x))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Поиск первого элемента в списке},
+		language={Lisp},
+	]
+(defun first_a (lst)
+  (cond
+    ((atom lst) lst)
+    (t (first_a (car lst)))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Поиск первого нечетного элемента в списке},
+		language={Lisp},
+	]
+(defun first_odd_a (lst)
+  (cond
+    ((null lst) nil)
+    ((odd (first_a lst)) (first_a lst))
+    (t (first_odd_a (cdr lst)))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Поиск n-ого элемента элемента в списке},
+		language={Lisp},
+	]
+(defun my_nth (lst n)
+  (cond
+    ((null lst) nil)
+    ((= n 0) (car lst))
+    (t (my_nth (cdr lst) (1- n)))))
+\end{lstlisting}
+
+\section{Дополняемая рекурсия}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Общий вид дополняемой рекурсии},
+		language={Lisp},
+	]
+(defun fun (x)
+  (cond
+    (end_test end_value)
+    (t (add_function (fun changed_x)))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Функция, вычисляющая длину списка},
+		language={Lisp},
+	]
+(defun my_length (lst)
+  (cond
+    ((null lst) 0)
+    (t (1+ my_length (cdr lst)))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Преобразование структурированного списка в одноуровневый},
+		language={Lisp},
+	]
+(defun into_one_level (lst)
+  (cond
+    ((null lst) nil)
+    ((atom lst) (cons lst nil))
+    (t (append (into_one_level (car lst))
+               (into_one_level (cdr lst))))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Сортировка списка},
+		language={Lisp},
+	]
+(defun insert_help (x lst)
+  (cond
+    ((null lst) (list x))
+    ((<= x (car lst)) (cons x lst))
+    (t (cons (car lst) (insert_help x (cdr lst))))))
+
+(defun sort_help (lst1 lst2)
+  (cond ((null lst1) lst2)
+    (t (sort_help (cdr lst1) (insert_help (ar lst1) lst2)))))
+
+(defun sort_ins (lst)
+    (sort_help lst '()))
+\end{lstlisting}
+
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Первое число в струтурированном списке},
+		language={Lisp},
+	]
+(defun first_number (lst)
+  (cond
+    ((number lst) lst)
+    ((atom lst) Nil)
+    (t (or (first-number (car lst))
+           (first-number (cdr lst))))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Длина структурированного списка (в атомах)},
+		language={Lisp},
+	]
+(defun cons_slls (lst)
+  (if (atom lst) 0
+      (t (length lst)
+         (reduce
+            #'+
+            (mapcar #'cons_slls lst)))))
+  )
+)
+\end{lstlisting}
+
+\begin{lstlisting} [
+		float=h!,
+		frame=single,
+		numbers=left,
+		abovecaptionskip=-5pt,
+		caption={Преобразование структурированного списка в одноуровневый},
+		language={Lisp},
+	]
+(defun into_one_level (lst res)
+  (cond
+    ((null lst) res)
+    ((atom lst) (cons lst res))
+    (t (into_one_level (car lst)
+                       into_one_level (cdr lst) res))))
+\end{lstlisting}
