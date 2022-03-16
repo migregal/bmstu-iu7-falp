@@ -4,3 +4,6 @@
 
 (defun my-reverse (lst)
   (my-reverse-internal lst ()))
+
+(defun reversed (lst)
+  `(,@(reversed (cdr lst)) ,(car lst)))
