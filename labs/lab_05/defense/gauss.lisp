@@ -1,131 +1,95 @@
-(defvar m1 '((1.00 -1.00  -5.00)
-             (2.00  1.00  -7.00)))
+(defvar m1 '((1.00  -1.00  4.5)
+             (2.00   1.00  2.0)
+             (-2.00  3.00  2.0)))
 
-(defmacro mapcar-1 (fn n lst)
-  `(mapcar #'(lambda (l) (funcall ,fn ,n l)) ,lst) )
+(defvar v1 '(-5.00 -7.00 -1.00))
 
-(defun reduce-to-triangular-form (m)
-  (cond
-    ((null (cdr m)) m)
-    ((cons
-      (car m)
-      (mapcar-1
-        #'cons
-        0
-        (reduce-to-triangular-form
-          (mapcar
-            #'cdr
+; (-2.05 -1.1 -0.9)
+
+(defvar m2 '((16.0  14.0  14.0  8.0   8.0   0.0   14.0  19.0  12.0  29.0  6.0   13.0  20.0  12.0  23.0  2.0   3.0   30.0  21.0  13.0)
+             (14.0  1.0   0.0   11.0  3.0   3.0   13.0  1.0   11.0  29.0  24.0  14.0  11.0  29.0  17.0  3.0   5.0   28.0  20.0  1.0 )
+             (10.0  4.0   7.0   9.0   9.0   25.0  30.0  8.0   0.0   23.0  25.0  19.0  28.0  20.0  7.0   1.0   30.0  2.0   3.0   17.0)
+             (21.0  9.0   9.0   11.0  20.0  7.0   21.0  12.0  5.0   19.0  24.0  3.0   0.0   10.0  28.0  24.0  1.0   4.0   11.0  2.0 )
+             (23.0  10.0  30.0  12.0  14.0  1.0   16.0  5.0   17.0  20.0  30.0  4.0   13.0  25.0  22.0  10.0  6.0   23.0  22.0  24.0)
+             (12.0  28.0  3.0   14.0  7.0   17.0  7.0   1.0   22.0  12.0  16.0  13.0  13.0  11.0  21.0  13.0  5.0   28.0  4.0   30.0)
+             (19.0  13.0  21.0  27.0  30.0  27.0  9.0   6.0   11.0  13.0  11.0  10.0  3.0   1.0   7.0   8.0   11.0  0.0   19.0  27.0)
+             (20.0  17.0  19.0  20.0  17.0  17.0  24.0  17.0  25.0  3.0   6.0   29.0  6.0   10.0  10.0  18.0  21.0  23.0  30.0  4.0 )
+             (16.0  27.0  17.0  12.0  25.0  8.0   22.0  12.0  24.0  20.0  2.0   6.0   10.0  16.0  14.0  3.0   29.0  11.0  10.0  21.0)
+             (27.0  8.0   23.0  3.0   7.0   14.0  29.0  3.0   22.0  7.0   20.0  5.0   15.0  6.0   7.0   8.0   4.0   8.0   18.0  26.0)
+             (9.0   16.0  2.0   23.0  7.0   1.0   12.0  3.0   23.0  20.0  23.0  6.0   9.0   23.0  25.0  13.0  12.0  3.0   8.0   5.0 )
+             (3.0   28.0  20.0  22.0  28.0  28.0  28.0  12.0  14.0  27.0  3.0   17.0  22.0  21.0  1.0   20.0  25.0  5.0   15.0  23.0)
+             (11.0  11.0  17.0  9.0   24.0  12.0  24.0  13.0  10.0  17.0  2.0   28.0  30.0  7.0   20.0  27.0  22.0  29.0  5.0   4.0 )
+             (28.0  3.0   8.0   28.0  7.0   17.0  18.0  24.0  8.0   23.0  30.0  27.0  5.0   1.0   29.0  20.0  14.0  21.0  11.0  0.0 )
+             (8.0   13.0  3.0   14.0  7.0   14.0  23.0  16.0  26.0  13.0  8.0   5.0   16.0  0.0   11.0  7.0   19.0  24.0  4.0   11.0)
+             (22.0  6.0   7.0   18.0  26.0  26.0  27.0  15.0  6.0   11.0  19.0  24.0  28.0  23.0  26.0  11.0  20.0  14.0  17.0  17.0)
+             (22.0  20.0  5.0   12.0  24.0  25.0  14.0  1.0   9.0   15.0  23.0  15.0  24.0  22.0  23.0  20.0  27.0  2.0   20.0  2.0 )
+             (13.0  1.0   29.0  16.0  0.0   1.0   28.0  15.0  18.0  23.0  0.0   18.0  18.0  29.0  10.0  0.0   12.0  15.0  5.0   10.0)
+             (13.0  15.0  26.0  10.0  6.0   9.0   5.0   6.0   26.0  25.0  22.0  19.0  24.0  1.0   3.0   18.0  2.0   26.0  7.0   27.0)
+             (18.0  22.0  12.0  19.0  7.0   23.0  0.0   22.0  21.0  10.0  30.0  1.0   28.0  15.0  30.0  10.0  8.0   28.0  2.0   0.0 )))
+
+(defvar v2 '(7.0 11.0 24.0 1.0 26.0 1.0 20.0 24.0 4.0 27.0 16.0 6.0 21.0 15.0 9.0 15.0 8.0 12.0 11.0 12.0))
+
+(defun normalize-by (value lst)
+  (mapcar #'(lambda (l) (funcall #'/ l value)) lst))
+
+(defun extract-vector (m)
+  (cons (mapcar #'car m) (mapcar #'cdr m)))
+
+(defun reduce-to-triangle (m v)
+  (cond ((null (cdr m)) (cons m v ))
+    ((let*
+      ((first-a   (find-if-not #'zerop (car m)))
+       (vector-a  (/ (car v) first-a))
+       (first-row (normalize-by first-a (car m)))
+       (s (extract-vector
             (mapcar
-              #'(lambda (r)
-                (mapcar #'- (mapcar-1 #'* (caar m) r)
-                            (mapcar-1 #'* (car r) (car m))))
-              (cdr m)))))))))
+              #'(lambda (r b)
+                  (let ((first-b (find-if-not #'zerop r)))
+                    (cons
+                      (mapcar #'- (normalize-by first-b r) first-row)
+                      (- (/ b first-b) vector-a))))
+              (cdr m)
+              (cdr v))))
+        (res (reduce-to-triangle (car s) (cdr s))))
+      (cons
+        (cons (car m) (car res))
+        (cons (car v) (cdr res)))))))
 
-(defun reflect (m)
-  (reverse (mapcar #'(lambda (r) (append (reverse (butlast r)) (last r))) m)))
+(defun transose (m)
+  (apply `mapcar `list m))
 
-(defun get-diagonal-matrix (m)
-  (reduce-to-triangular-form (reflect (reduce-to-triangular-form m))))
+(defun rotate180 (m)
+  (reverse (transose (reverse (transose m)))))
 
-(defun gauss (m)
+(defun get-diagonal-matrix (m v)
+  (let ((res (reduce-to-triangle m v)))
+  (reduce-to-triangle (rotate180 (car res)) (reverse (cdr res)))
+  ))
+
+(defun gauss (m v)
   (catch 'result
     (reverse
+      (let ((res (get-diagonal-matrix m v)))
       (mapcar
-        #'(lambda (r)
+        #'(lambda (r b)
           (let ((pivot (find-if-not #'zerop r)))
-                (if pivot (/ (car (last r)) pivot) (throw 'result 'singular))))
-        (get-diagonal-matrix m)))))
+                (if pivot (/ b pivot) (throw 'result 'singular))))
+        (car res)
+        (cdr res)
+        )))))
 
 (ql:quickload "fiveam")
-
-; reduce-to-triangular-form
-
-(fiveam:test reduce-to-triangular-form-1
-  (fiveam:is (equalp (reduce-to-triangular-form '()) '())))
-
-(fiveam:test reduce-to-triangular-form-2
-  (fiveam:is (equalp (reduce-to-triangular-form '(1)) '(1))))
-
-(fiveam:test reduce-to-triangular-form-3
-  (fiveam:is (equalp (reduce-to-triangular-form '((1))) '((1)))))
-
-(fiveam:test reduce-to-triangular-form-4
-  (fiveam:is (equalp (reduce-to-triangular-form '((1 2))) '((1 2)))))
-
-(fiveam:test reduce-to-triangular-form-5
-  (fiveam:is (equalp
-                (reduce-to-triangular-form '((1 2) (3 4)))
-                '((1 2) (0 -2)))))
-
-(fiveam:test reduce-to-triangular-form-6
-  (fiveam:is (equalp
-                (reduce-to-triangular-form '((1 1 2) (2 3 3)))
-                '((1 1 2) (0 1 -1)))))
-
-; reduce-to-triangular-form
-
-; reflect
-
-(fiveam:test reflect-1
-  (fiveam:is (equalp (reflect `()) nil)))
-
-(fiveam:test reflect-2
-  (fiveam:is (equalp (reflect `(())) '(nil))))
-
-(fiveam:test reflect-3
-  (fiveam:is (equalp (reflect `((1))) '((1)))))
-
-(fiveam:test reflect-4
-  (fiveam:is (equalp (reflect `((1 2))) '((1 2)))))
-
-(fiveam:test reflect-5
-  (fiveam:is (equalp (reflect `((1) (2))) '((2) (1)))))
-
-(fiveam:test reflect-6
-  (fiveam:is (equalp (reflect `((1 2) (3 5))) '((3 5) (1 2)))))
-
-(fiveam:test reflect-7
-  (fiveam:is (equalp (reflect `((1 2 3))) '((2 1 3)))))
-
-(fiveam:test reflect-8
-  (fiveam:is (equalp (reflect `((1 2 3) (4 5 6))) '((5 4 6) (2 1 3)))))
-
-; reflect
-
-; get-diagonal-matrix
-
-(fiveam:test get-diagonal-matrix-1
-  (fiveam:is (equalp (get-diagonal-matrix '()) nil)))
-
-(fiveam:test get-diagonal-matrix-2
-  (fiveam:is (equalp (get-diagonal-matrix '(())) '(nil))))
-
-(fiveam:test get-diagonal-matrix-3
-  (fiveam:is (equalp (get-diagonal-matrix '((1))) '((1)))))
-
-(fiveam:test get-diagonal-matrix-4
-  (fiveam:is (equalp (get-diagonal-matrix '((1 2))) '((1 2)))))
-
-(fiveam:test get-diagonal-matrix-5
-  (fiveam:is (equalp (get-diagonal-matrix '((1 2) (3 4))) '((0 -2) (0 2)))))
-
-(fiveam:test get-diagonal-matrix-6
-  (fiveam:is (equalp
-                (get-diagonal-matrix '((1 2 2) (3 4 5)))
-                '((-2 0 -1) (0 -2 -2)))))
-
-; get-diagonal-matrix
 
 ; gauss
 
 (fiveam:test gauss-1
-  (fiveam:is (equalp (gauss '()) nil)))
+  (fiveam:is (equalp (gauss '((1)) '(2)) '(2))))
 
 (fiveam:test gauss-2
-  (fiveam:is (equalp (gauss '((1 2))) '(2))))
+  (fiveam:is (equalp (gauss '((1 2) (3 4)) '(2 5)) '(1 1/2))))
 
 (fiveam:test gauss-3
-  (fiveam:is (equalp (gauss '((1 2 2) (3 4 5))) '(1 1/2))))
+  (fiveam:is (equalp (gauss m1 v1) '(-2.05 -1.1 -0.9))))
 
 ; gauss
 
