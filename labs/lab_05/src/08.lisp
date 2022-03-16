@@ -3,7 +3,8 @@
 
 (defun compl-mult-all-numbers (mult lst)
   (mapcar
-    #'(lambda (el)
-        (cond ((listp el) (compl-mult-all-numbers mult el))
-              ((* el mult))))
+    #'(lambda (obj)
+        (cond ((numberp obj) (* obj mult))
+              ((listp obj) (compl-mult-all-numbers mult obj))
+              (obj)))
     lst))
