@@ -2,9 +2,6 @@
 
 (ql:quickload "fiveam")
 
-(defpackage :lab05
-  (:use :common-lisp :fiveam))
-
 ; polyndromp-reverse
 
 (fiveam:test polyndrom-reverse-1
