@@ -1,10 +1,3 @@
-; (defvar m1 '((1.00 0.00 0.00  0.00  0.00   0.00   -0.01)
-;              (1.00 0.63 0.39  0.25  0.16   0.10    0.61)
-;              (1.00 1.26 1.58  1.98  2.49   3.13    0.91)
-;              (1.00 1.88 3.55  6.70 12.62  23.80    0.99)
-;              (1.00 2.51 6.32 15.88 39.90 100.28    0.60)
-;              (1.00 3.14 9.87 31.01 97.41 306.02    0.02)))
-
 (defvar m1 '((1.00 -1.00  -5.00)
              (2.00  1.00  -7.00)))
 
@@ -42,3 +35,98 @@
           (let ((pivot (find-if-not #'zerop r)))
                 (if pivot (/ (car (last r)) pivot) (throw 'result 'singular))))
         (get-diagonal-matrix m)))))
+
+(ql:quickload "fiveam")
+
+; reduce-to-triangular-form
+
+(fiveam:test reduce-to-triangular-form-1
+  (fiveam:is (equalp (reduce-to-triangular-form '()) '())))
+
+(fiveam:test reduce-to-triangular-form-2
+  (fiveam:is (equalp (reduce-to-triangular-form '(1)) '(1))))
+
+(fiveam:test reduce-to-triangular-form-3
+  (fiveam:is (equalp (reduce-to-triangular-form '((1))) '((1)))))
+
+(fiveam:test reduce-to-triangular-form-4
+  (fiveam:is (equalp (reduce-to-triangular-form '((1 2))) '((1 2)))))
+
+(fiveam:test reduce-to-triangular-form-5
+  (fiveam:is (equalp
+                (reduce-to-triangular-form '((1 2) (3 4)))
+                '((1 2) (0 -2)))))
+
+(fiveam:test reduce-to-triangular-form-6
+  (fiveam:is (equalp
+                (reduce-to-triangular-form '((1 1 2) (2 3 3)))
+                '((1 1 2) (0 1 -1)))))
+
+; reduce-to-triangular-form
+
+; reflect
+
+(fiveam:test reflect-1
+  (fiveam:is (equalp (reflect `()) nil)))
+
+(fiveam:test reflect-2
+  (fiveam:is (equalp (reflect `(())) '(nil))))
+
+(fiveam:test reflect-3
+  (fiveam:is (equalp (reflect `((1))) '((1)))))
+
+(fiveam:test reflect-4
+  (fiveam:is (equalp (reflect `((1 2))) '((1 2)))))
+
+(fiveam:test reflect-5
+  (fiveam:is (equalp (reflect `((1) (2))) '((2) (1)))))
+
+(fiveam:test reflect-6
+  (fiveam:is (equalp (reflect `((1 2) (3 5))) '((3 5) (1 2)))))
+
+(fiveam:test reflect-7
+  (fiveam:is (equalp (reflect `((1 2 3))) '((2 1 3)))))
+
+(fiveam:test reflect-8
+  (fiveam:is (equalp (reflect `((1 2 3) (4 5 6))) '((5 4 6) (2 1 3)))))
+
+; reflect
+
+; get-diagonal-matrix
+
+(fiveam:test get-diagonal-matrix-1
+  (fiveam:is (equalp (get-diagonal-matrix '()) nil)))
+
+(fiveam:test get-diagonal-matrix-2
+  (fiveam:is (equalp (get-diagonal-matrix '(())) '(nil))))
+
+(fiveam:test get-diagonal-matrix-3
+  (fiveam:is (equalp (get-diagonal-matrix '((1))) '((1)))))
+
+(fiveam:test get-diagonal-matrix-4
+  (fiveam:is (equalp (get-diagonal-matrix '((1 2))) '((1 2)))))
+
+(fiveam:test get-diagonal-matrix-5
+  (fiveam:is (equalp (get-diagonal-matrix '((1 2) (3 4))) '((0 -2) (0 2)))))
+
+(fiveam:test get-diagonal-matrix-6
+  (fiveam:is (equalp
+                (get-diagonal-matrix '((1 2 2) (3 4 5)))
+                '((-2 0 -1) (0 -2 -2)))))
+
+; get-diagonal-matrix
+
+; gauss
+
+(fiveam:test gauss-1
+  (fiveam:is (equalp (gauss '()) nil)))
+
+(fiveam:test gauss-2
+  (fiveam:is (equalp (gauss '((1 2))) '(2))))
+
+(fiveam:test gauss-3
+  (fiveam:is (equalp (gauss '((1 2 2) (3 4 5))) '(1 1/2))))
+
+; gauss
+
+; (fiveam:run!)
