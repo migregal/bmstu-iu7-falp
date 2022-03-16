@@ -7,4 +7,4 @@
         (T (sum-lens-rec-internal (cdr lol) (+ acc (length (car lol)))))))
 
 (defun sum-lens-rec (list-of-lists)
-  (and (listp list-of-lists) (sum-lens-rec-internal list-of-lists 0)))
+  (cond ((listp list-of-lists) (sum-lens-rec-internal list-of-lists 0))))

@@ -1,6 +1,6 @@
 (defun my-subsetp (s1 s2)
   (every
-    #'(lambda (a) (some #'(lambda (b) (= a b)) s2))
+    #'(lambda (a) (some #'(lambda (b) (equal a b)) s2))
     s1))
 
 ; (defun my-subsetp (set1 set2)

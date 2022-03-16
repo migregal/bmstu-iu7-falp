@@ -1,2 +1,2 @@
 (defun palindromp (lst)
-  (every #'= lst (reverse lst)))
+  (every #'equal lst (reverse lst)))
