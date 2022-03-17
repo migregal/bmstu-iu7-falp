@@ -1,32 +1,3 @@
-(defvar m1 '((1.00  -1.00  4.5)
-             (2.00   1.00  2.00)
-             (-2.00  3.00  2.00)))
-
-(defvar v1 '(-5.00 -7.00 -1.00))
-
-(defvar m2 '((16.0d0  14.0d0  14.0d0  8.0d0   8.0d0   0.0d0   14.0d0  19.0d0  12.0d0  29.0d0  6.0d0   13.0d0  20.0d0  12.0d0  23.0d0  2.0d0   3.0d0   30.0d0  21.0d0  13.0d0)
-             (14.0d0  1.0d0   0.0d0   11.0d0  3.0d0   3.0d0   13.0d0  1.0d0   11.0d0  29.0d0  24.0d0  14.0d0  11.0d0  29.0d0  17.0d0  3.0d0   5.0d0   28.0d0  20.0d0  1.0d0 )
-             (10.0d0  4.0d0   7.0d0   9.0d0   9.0d0   25.0d0  30.0d0  8.0d0   0.0d0   23.0d0  25.0d0  19.0d0  28.0d0  20.0d0  7.0d0   1.0d0   30.0d0  2.0d0   3.0d0   17.0d0)
-             (21.0d0  9.0d0   9.0d0   11.0d0  20.0d0  7.0d0   21.0d0  12.0d0  5.0d0   19.0d0  24.0d0  3.0d0   0.0d0   10.0d0  28.0d0  24.0d0  1.0d0   4.0d0   11.0d0  2.0d0 )
-             (23.0d0  10.0d0  30.0d0  12.0d0  14.0d0  1.0d0   16.0d0  5.0d0   17.0d0  20.0d0  30.0d0  4.0d0   13.0d0  25.0d0  22.0d0  10.0d0  6.0d0   23.0d0  22.0d0  24.0d0)
-             (12.0d0  28.0d0  3.0d0   14.0d0  7.0d0   17.0d0  7.0d0   1.0d0   22.0d0  12.0d0  16.0d0  13.0d0  13.0d0  11.0d0  21.0d0  13.0d0  5.0d0   28.0d0  4.0d0   30.0d0)
-             (19.0d0  13.0d0  21.0d0  27.0d0  30.0d0  27.0d0  9.0d0   6.0d0   11.0d0  13.0d0  11.0d0  10.0d0  3.0d0   1.0d0   7.0d0   8.0d0   11.0d0  0.0d0   19.0d0  27.0d0)
-             (20.0d0  17.0d0  19.0d0  20.0d0  17.0d0  17.0d0  24.0d0  17.0d0  25.0d0  3.0d0   6.0d0   29.0d0  6.0d0   10.0d0  10.0d0  18.0d0  21.0d0  23.0d0  30.0d0  4.0d0 )
-             (16.0d0  27.0d0  17.0d0  12.0d0  25.0d0  8.0d0   22.0d0  12.0d0  24.0d0  20.0d0  2.0d0   6.0d0   10.0d0  16.0d0  14.0d0  3.0d0   29.0d0  11.0d0  10.0d0  21.0d0)
-             (27.0d0  8.0d0   23.0d0  3.0d0   7.0d0   14.0d0  29.0d0  3.0d0   22.0d0  7.0d0   20.0d0  5.0d0   15.0d0  6.0d0   7.0d0   8.0d0   4.0d0   8.0d0   18.0d0  26.0d0)
-             (9.0d0   16.0d0  2.0d0   23.0d0  7.0d0   1.0d0   12.0d0  3.0d0   23.0d0  20.0d0  23.0d0  6.0d0   9.0d0   23.0d0  25.0d0  13.0d0  12.0d0  3.0d0   8.0d0   5.0d0 )
-             (3.0d0   28.0d0  20.0d0  22.0d0  28.0d0  28.0d0  28.0d0  12.0d0  14.0d0  27.0d0  3.0d0   17.0d0  22.0d0  21.0d0  1.0d0   20.0d0  25.0d0  5.0d0   15.0d0  23.0d0)
-             (11.0d0  11.0d0  17.0d0  9.0d0   24.0d0  12.0d0  24.0d0  13.0d0  10.0d0  17.0d0  2.0d0   28.0d0  30.0d0  7.0d0   20.0d0  27.0d0  22.0d0  29.0d0  5.0d0   4.0d0 )
-             (28.0d0  3.0d0   8.0d0   28.0d0  7.0d0   17.0d0  18.0d0  24.0d0  8.0d0   23.0d0  30.0d0  27.0d0  5.0d0   1.0d0   29.0d0  20.0d0  14.0d0  21.0d0  11.0d0  0.0d0 )
-             (8.0d0   13.0d0  3.0d0   14.0d0  7.0d0   14.0d0  23.0d0  16.0d0  26.0d0  13.0d0  8.0d0   5.0d0   16.0d0  0.0d0   11.0d0  7.0d0   19.0d0  24.0d0  4.0d0   11.0d0)
-             (22.0d0  6.0d0   7.0d0   18.0d0  26.0d0  26.0d0  27.0d0  15.0d0  6.0d0   11.0d0  19.0d0  24.0d0  28.0d0  23.0d0  26.0d0  11.0d0  20.0d0  14.0d0  17.0d0  17.0d0)
-             (22.0d0  20.0d0  5.0d0   12.0d0  24.0d0  25.0d0  14.0d0  1.0d0   9.0d0   15.0d0  23.0d0  15.0d0  24.0d0  22.0d0  23.0d0  20.0d0  27.0d0  2.0d0   20.0d0  2.0d0 )
-             (13.0d0  1.0d0   29.0d0  16.0d0  0.0d0   1.0d0   28.0d0  15.0d0  18.0d0  23.0d0  0.0d0   18.0d0  18.0d0  29.0d0  10.0d0  0.0d0   12.0d0  15.0d0  5.0d0   10.0d0)
-             (13.0d0  15.0d0  26.0d0  10.0d0  6.0d0   9.0d0   5.0d0   6.0d0   26.0d0  25.0d0  22.0d0  19.0d0  24.0d0  1.0d0   3.0d0   18.0d0  2.0d0   26.0d0  7.0d0   27.0d0)
-             (18.0d0  22.0d0  12.0d0  19.0d0  7.0d0   23.0d0  0.0d0   22.0d0  21.0d0  10.0d0  30.0d0  1.0d0   28.0d0  15.0d0  30.0d0  10.0d0  8.0d0   28.0d0  2.0d0   0.0d0 )))
-
-(defvar v2 '(7.0d0 11.0d0 24.0d0 1.0d0 26.0d0 1.0d0 20.0d0 24.0d0 4.0d0 27.0d0 16.0d0 6.0d0 21.0d0 15.0d0 9.0d0 15.0d0 8.0d0 12.0d0 11.0d0 12.0d0))
-
 (defun normalize-by (value lst)
   (mapcar #'(lambda (l) (funcall #'/ l value)) lst))
 
@@ -72,84 +43,85 @@
           (let ((pivot (find-if-not #'zerop r)))
                 (if pivot (/ b pivot) (throw 'result 'singular))))
         (car res)
-        (cdr res)
-        )))))
+        (cdr res))))))
 
 ; tests
 
 (ql:quickload "fiveam")
 
-(defun floats-rougly-equal-p (f1 f2 &optional (precision 1e-6))
+(load "3x3.lisp")
+(load "5x5.lisp")
+(load "10x10.lisp")
+(load "20x20.lisp")
+
+(defun floats-rougly-equal-p (f1 f2 &optional (precision 1e-4))
   (< (abs (- f1 f2)) precision))
 
 (defun float-lists-eq (l1 l2)
   (every (lambda (a b) (floats-rougly-equal-p a b)) l1 l2))
 
+(defun float-matrix-eq (m1 m2)
+  (every (lambda (ra rb) (float-lists-eq ra rb)) m1 m2))
 
 ; rotate180
 
-(fiveam:test rotate180-1
-  (fiveam:is (equalp (rotate180 '((1))) '((1)))))
-
-(fiveam:test rotate180-2
-  (fiveam:is (equalp (rotate180 '((1) (2))) '((2) (1)))))
-
-(fiveam:test rotate180-3
-  (fiveam:is (equalp (rotate180 '((1 2) (3 4))) '((4 3) (2 1)))))
-
-(fiveam:test rotate180-4
+(fiveam:test rotate180
+  (fiveam:is (equalp (rotate180 '((1))) '((1))))
+  (fiveam:is (equalp (rotate180 '((1) (2))) '((2) (1))))
+  (fiveam:is (equalp (rotate180 '((1 2) (3 4))) '((4 3) (2 1))))
   (fiveam:is (equalp
-                (rotate180 '((1 2 3) (4 5 6) (7 8 9)))
-                '((9 8 7) (6 5 4) (3 2 1)))))
+                (rotate180 m3x3)
+                '((2.0 3.0 -2.0) (2.0 1.0 2.0) (4.5 -1.0 1.0)))))
 
 ; rotate180
 
 ; get-diagonal-matrix
 
-(fiveam:test get-diagonal-matrix-1
-  (fiveam:is (equalp (get-diagonal-matrix '((1)) '(2)) '(((1)) 2))))
-
-(fiveam:test get-diagonal-matrix-2
+(fiveam:test get-diagonal-matrix
+  (fiveam:is (equalp (get-diagonal-matrix '((1)) '(2)) '(((1)) 2)))
   (fiveam:is (equalp
                 (get-diagonal-matrix '((1 2) (3 4)) '(2 5))
-                '(((-2/3 0) (0 1/2)) -1/3 1/2))))
+                '(((-2/3 0) (0 1/2)) -1/3 1/2)))
+  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m3x3 v3x3)) m3x3diagonal))
+  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m5x5 v5x5)) m5x5diagonal))
+  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m10x10 v10x10)) m10x10diagonal))
+)
+
+; (car (get-diagonal-matrix m20x20 v20x20))
 
 ; get-diagonal-matrix
 
 ; reduce-to-triangle
 
-(fiveam:test reduce-to-triangle-1
-  (fiveam:is (equalp (reduce-to-triangle '() '()) '(nil))))
-
-(fiveam:test reduce-to-triangle-2
-  (fiveam:is (equalp (reduce-to-triangle '(1) '(1)) '((1) 1))))
-
-(fiveam:test reduce-to-triangle-3
-  (fiveam:is (equalp (reduce-to-triangle '((1)) '(2)) '(((1)) 2))))
-
-(fiveam:test reduce-to-triangle-4
+(fiveam:test reduce-to-triangle
+  (fiveam:is (equalp (reduce-to-triangle '() '()) '(nil)))
+  (fiveam:is (equalp (reduce-to-triangle '(1) '(1)) '((1) 1)))
+  (fiveam:is (equalp (reduce-to-triangle '((1)) '(2)) '(((1)) 2)))
   (fiveam:is (equalp
                 (reduce-to-triangle '((1) (3)) '(2 4))
-                '(((1) (0)) 2 -2/3))))
-
-(fiveam:test reduce-to-triangle-5
+                '(((1) (0)) 2 -2/3)))
   (fiveam:is (equalp
-                (reduce-to-triangle '((1 1) (2 3)) '(2 3))
-                '(((1 1) (0 1/2)) 2 -1/2))))
+                (reduce-to-triangle m3x3 v3x3)
+                (cons m3x3tr v3x3tr)))
+  (fiveam:is (float-matrix-eq (car (reduce-to-triangle m5x5 v5x5)) m5x5tr))
+  (fiveam:is (float-lists-eq (cdr (reduce-to-triangle m5x5 v5x5)) v5x5tr))
+  (fiveam:is (float-matrix-eq (car (reduce-to-triangle m10x10 v10x10)) m10x10tr))
+  (fiveam:is (float-lists-eq (cdr (reduce-to-triangle m10x10 v10x10)) v10x10tr))
+)
 
 ; reduce-to-triangle
 
 ; gauss
 
-(fiveam:test gauss-1
-  (fiveam:is (equalp (gauss '((1)) '(2)) '(2))))
-
-(fiveam:test gauss-2
-  (fiveam:is (equalp (gauss '((1 2) (3 4)) '(2 5)) '(1 1/2))))
-
-(fiveam:test gauss-3
-  (fiveam:is (float-lists-eq (gauss m1 v1) '(-2.05 -1.1 -0.9))))
+(fiveam:test gauss
+  (fiveam:is (equalp (gauss '((1)) '(2)) '(2)))
+  (fiveam:is (equalp (gauss '((1 2) (3 4)) '(2 5)) '(1 1/2)))
+  (fiveam:is (float-lists-eq (gauss m3x3 v3x3) solution3x3))
+  (fiveam:is (float-lists-eq (gauss m5x5 v5x5) solution5x5))
+  (fiveam:is (float-lists-eq (gauss m10x10 v10x10) solution10x10))
+  (fiveam:is (float-lists-eq (gauss m20x20 v20x20) solution20x20))
+)
 
 ; gauss
 
-; (fiveam:run!)
+(fiveam:run!)
