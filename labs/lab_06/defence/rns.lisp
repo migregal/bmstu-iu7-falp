@@ -1,16 +1,11 @@
-(defstruct rns base n m b)
+(load "utils.lisp")
 
-(defun solver (a b c &optional (x 0))
-  (let ((cx (mod (* a x) b)))
-    (cond
-      ((equal cx c) x)
-      ((>= x b) nil)
-      ((solver a b c (1+ x))))))
+(defstruct rns base n m b)
 
 (defun new-rns (base)
   (let* ((n (reduce #'* base))
          (m (mapcar #'(lambda (x) (/ n x)) base))
-         (b (mapcar #'(lambda (mi basei) (solver mi basei 1)) m base)))
+         (b (mapcar #'(lambda (mi basei) (solver mi basei)) m base)))
       (make-rns :base base :n n :m m :b b)))
 
 (defun dec-to-rns (num rns)
@@ -37,9 +32,9 @@
 ; tests:solver
 
 (fiveam:test solver
-  (fiveam:is (equalp (solver 35 3 1) 2))
-  (fiveam:is (equalp (solver 21 5 1) 1))
-  (fiveam:is (equalp (solver 15 7 1) 1)))
+  (fiveam:is (equalp (solver 35 3) 2))
+  (fiveam:is (equalp (solver 21 5) 1))
+  (fiveam:is (equalp (solver 15 7) 1)))
 
 ; tests:solver
 
