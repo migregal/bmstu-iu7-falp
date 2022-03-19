@@ -7,6 +7,8 @@
 (load "10x10.lisp")
 (load "20x20.lisp")
 (load "20x20.2.lisp")
+(load "40x40.lisp")
+(load "100x100.lisp")
 
 ; rotate180
 
@@ -36,8 +38,6 @@
 ; reduce-to-triangle
 
 (fiveam:test reduce-to-triangle
-  ; (fiveam:is (equalp (reduce-to-triangle '() '()) '(nil)))
-  (fiveam:is (equalp (reduce-to-triangle '((1)) '(1)) '(((1)) 1)))
   (fiveam:is (equalp (reduce-to-triangle '((1)) '(2)) '(((1)) 2)))
   (fiveam:is (equalp
                 (reduce-to-triangle m3x3 v3x3)
@@ -58,7 +58,9 @@
   (fiveam:is (float-lists-eq (gauss m5x5 v5x5) solution5x5))
   (fiveam:is (float-lists-eq (gauss m10x10 v10x10) solution10x10))
   (fiveam:is (float-lists-eq (gauss m20x20 v20x20) solution20x20))
-  (fiveam:is (float-lists-eq (gauss m20x20.2 v20x20.2) solution20x20.2)))
+  (fiveam:is (float-lists-eq (gauss m20x20.2 v20x20.2) solution20x20.2))
+  (fiveam:is (float-lists-eq (gauss m40x40 v40x40) solution40x40))
+  (fiveam:is (float-lists-eq (gauss m100x100 v100x100) solution100x100)))
 
 ; gauss
 
