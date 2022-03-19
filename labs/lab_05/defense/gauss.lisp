@@ -1,28 +1,53 @@
+(load "utils.lisp")
+
 (defun normalize-by (value lst)
   (mapcar #'(lambda (l) (funcall #'/ l value)) lst))
 
 (defun extract-vector (m)
   (cons (mapcar #'car m) (mapcar #'cdr m)))
 
+(defun get-first-non-zero-i (m i &optional (res 0))
+  (cond
+    ((null m) nil)
+    ((let
+      ((el (nth i (car m))))
+      (cond
+        ((floats-rougly-equal-p el 0.0 1e-6)
+          (get-first-non-zero-i (cdr m) i (1+ res)))
+        (t res))))))
+
+(defun move-zeroed-from-top (m v n)
+  (cond
+    ((floats-rougly-equal-p (nth n (car m)) 0.0 1e-6)
+      (let ((idx (1+ (get-first-non-zero-i (cdr m) n))))
+        (or (rotatef (nth 0 m) (nth idx m))
+            (rotatef (nth 0 v) (nth idx v)))))))
+
+(defun reduce-to-triangle-internal (m v n)
+  (cond ((null (cdr m)) (cons m v))
+    ((or
+      (move-zeroed-from-top m v n)
+      (let*
+        ((first-a  (nth n (car m)))
+        (vector-a  (/ (car v) first-a))
+        (first-row (normalize-by first-a (car m)))
+        (s (extract-vector
+              (mapcar
+                #'(lambda (r b)
+                    (let ((first-b (nth n r)))
+                      (cond ((zerop first-b) (cons r b))
+                            ((cons
+                                (mapcar #'- (normalize-by first-b r) first-row)
+                                (- (/ b first-b) vector-a))))))
+                (cdr m)
+                (cdr v))))
+          (res (reduce-to-triangle-internal (car s) (cdr s) (1+ n))))
+        (cons
+          (cons first-row (car res))
+          (cons vector-a (cdr res))))))))
+
 (defun reduce-to-triangle (m v)
-  (cond ((null (cdr m)) (cons m v ))
-    ((let*
-      ((first-a   (find-if-not #'zerop (car m)))
-       (vector-a  (/ (car v) first-a))
-       (first-row (normalize-by first-a (car m)))
-       (s (extract-vector
-            (mapcar
-              #'(lambda (r b)
-                  (let ((first-b (find-if-not #'zerop r)))
-                    (cons
-                      (mapcar #'- (normalize-by first-b r) first-row)
-                      (- (/ b first-b) vector-a))))
-              (cdr m)
-              (cdr v))))
-        (res (reduce-to-triangle (car s) (cdr s))))
-      (cons
-        (cons (car m) (car res))
-        (cons (car v) (cdr res)))))))
+  (reduce-to-triangle-internal (copy-list m) (copy-list v) 0))
 
 (defun transose (m)
   (apply `mapcar `list m))
@@ -53,15 +78,7 @@
 (load "5x5.lisp")
 (load "10x10.lisp")
 (load "20x20.lisp")
-
-(defun floats-rougly-equal-p (f1 f2 &optional (precision 1e-4))
-  (< (abs (- f1 f2)) precision))
-
-(defun float-lists-eq (l1 l2)
-  (every (lambda (a b) (floats-rougly-equal-p a b)) l1 l2))
-
-(defun float-matrix-eq (m1 m2)
-  (every (lambda (ra rb) (float-lists-eq ra rb)) m1 m2))
+(load "20x20.2.lisp")
 
 ; rotate180
 
@@ -71,7 +88,7 @@
   (fiveam:is (equalp (rotate180 '((1 2) (3 4))) '((4 3) (2 1))))
   (fiveam:is (equalp
                 (rotate180 m3x3)
-                '((2.0 3.0 -2.0) (2.0 1.0 2.0) (4.5 -1.0 1.0)))))
+                '((2.0 3.0 -2.0) (2.0 1.0 2.0) (4.5 -1.0 0.0)))))
 
 ; rotate180
 
@@ -81,13 +98,11 @@
   (fiveam:is (equalp (get-diagonal-matrix '((1)) '(2)) '(((1)) 2)))
   (fiveam:is (equalp
                 (get-diagonal-matrix '((1 2) (3 4)) '(2 5))
-                '(((-2/3 0) (0 1/2)) -1/3 1/2)))
+                '(((1 0) (0 1/2)) 1/2 1/2)))
   (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m3x3 v3x3)) m3x3diagonal))
   (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m5x5 v5x5)) m5x5diagonal))
   (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m10x10 v10x10)) m10x10diagonal))
 )
-
-; (car (get-diagonal-matrix m20x20 v20x20))
 
 ; get-diagonal-matrix
 
@@ -106,8 +121,7 @@
   (fiveam:is (float-matrix-eq (car (reduce-to-triangle m5x5 v5x5)) m5x5tr))
   (fiveam:is (float-lists-eq (cdr (reduce-to-triangle m5x5 v5x5)) v5x5tr))
   (fiveam:is (float-matrix-eq (car (reduce-to-triangle m10x10 v10x10)) m10x10tr))
-  (fiveam:is (float-lists-eq (cdr (reduce-to-triangle m10x10 v10x10)) v10x10tr))
-)
+  (fiveam:is (float-lists-eq (cdr (reduce-to-triangle m10x10 v10x10)) v10x10tr)))
 
 ; reduce-to-triangle
 
@@ -120,6 +134,7 @@
   (fiveam:is (float-lists-eq (gauss m5x5 v5x5) solution5x5))
   (fiveam:is (float-lists-eq (gauss m10x10 v10x10) solution10x10))
   (fiveam:is (float-lists-eq (gauss m20x20 v20x20) solution20x20))
+  (fiveam:is (float-lists-eq (gauss m20x20.2 v20x20.2) solution20x20.2))
 )
 
 ; gauss
