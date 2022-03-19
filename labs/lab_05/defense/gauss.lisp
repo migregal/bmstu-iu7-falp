@@ -68,11 +68,4 @@
 
 (defun gauss (m v)
   (catch 'result
-    (reverse
-      (let ((res (get-diagonal-matrix m v)))
-      (mapcar
-        #'(lambda (r b)
-          (let ((pivot (find-if-not #'zerop r)))
-                (if pivot (/ b pivot) (throw 'result 'singular))))
-        (car res)
-        (cdr res))))))
+    (reverse (cdr (get-diagonal-matrix m v)))))
