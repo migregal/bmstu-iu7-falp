@@ -24,37 +24,38 @@
         (or (rotatef (nth 0 m) (nth idx m))
             (rotatef (nth 0 v) (nth idx v)))))))
 
+(defun zerofy-col (m v rel rel-v col_i)
+  (extract-vector
+    (mapcar
+      #'(lambda (r b)
+          (let ((r-frst (nth col_i r)))
+            (cond ((zerop r-frst) (cons r b))
+                  ((cons
+                      (mapcar #'- (normalize-by r-frst r) rel)
+                      (- (/ b r-frst) rel-v))))))
+      (cdr m)
+      (cdr v))))
 
-(defun reduce-to-triangle-internal (m v n)
+(defun reduce-to-triangle-internal (m v &optional (n 0))
   (move-zeroed-from-top m v n)
-  (cond
-    ((null (cdr m))
-      (let ((el (nth n (car m))))
+  (let ((rel-car (nth n (car m))))
+    (cond
+      ((null (cdr m))
         (cons
-          (cons (normalize-by el (car m)) nil)
-          (cons (/ (car v) el) nil))))
-    ((let*
-      ((first-a  (nth n (car m)))
-      (vector-a  (/ (car v) first-a))
-      (first-row (normalize-by first-a (car m)))
-      (s (extract-vector
-            (mapcar
-              #'(lambda (r b)
-                  (let ((first-b (nth n r)))
-                    (cond ((zerop first-b) (cons r b))
-                          ((cons
-                              (mapcar #'- (normalize-by first-b r) first-row)
-                              (- (/ b first-b) vector-a))))))
-              (cdr m)
-              (cdr v))))
-        (res (reduce-to-triangle-internal (car s) (cdr s) (1+ n))))
-      (cons
-        (cons first-row (car res))
-        (cons vector-a (cdr res)))))))
+          (cons (normalize-by rel-car (car m)) nil)
+          (cons (/ (car v) rel-car) nil)))
+      ((let*
+        ((norm-rel (normalize-by rel-car (car m)))
+         (vec-car  (/ (car v) rel-car))
+         (s (zerofy-col m v norm-rel vec-car n))
+         (res (reduce-to-triangle-internal (car s) (cdr s) (1+ n))))
+        (cons
+          (cons norm-rel (car res))
+          (cons vec-car (cdr res))))))))
 
 
 (defun reduce-to-triangle (m v)
-  (reduce-to-triangle-internal (copy-list m) (copy-list v) 0))
+  (reduce-to-triangle-internal (copy-list m) (copy-list v)))
 
 (defun transose (m)
   (apply `mapcar `list m))
@@ -67,5 +68,4 @@
     (reduce-to-triangle (rotate180 (car res)) (reverse (cdr res)))))
 
 (defun gauss (m v)
-  (catch 'result
-    (reverse (cdr (get-diagonal-matrix m v)))))
+  (reverse (cdr (get-diagonal-matrix m v))))

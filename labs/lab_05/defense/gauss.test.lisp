@@ -29,9 +29,11 @@
   (fiveam:is (equalp
                 (get-diagonal-matrix '((1 2) (3 4)) '(2 5))
                 '(((1 0) (0 1)) 1/2 1)))
-  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m3x3 v3x3)) m3x3diagonal))
-  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m5x5 v5x5)) m5x5diagonal))
-  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m10x10 v10x10)) m10x10diagonal)))
+  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m3x3 v3x3)) (identity-mat 3)))
+  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m5x5 v5x5)) (identity-mat 5)))
+  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m10x10 v10x10)) (identity-mat 10)))
+  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m20x20 v20x20)) (identity-mat 20)))
+  (fiveam:is (float-matrix-eq (car (get-diagonal-matrix m40x40 v40x40)) (identity-mat 40))))
 
 ; get-diagonal-matrix
 
