@@ -1,0 +1,281 @@
+\chapter{Практическая часть}
+
+\section{Написать хвостовую рекурсивную функцию my-reverse, которая развернет верхний уровень своего списка-аргумента lst}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, разворачивающая первый уровень списка},
+	label={lst:1-1},
+	language={Lisp},
+]
+(defun my-reverse-internal (lst res)
+  (cond ((null lst) res)
+        ((my-reverse (cdr lst) (cons (car lst) res)))) )
+
+(defun my-reverse (lst res)
+  (my-reverse-internal lst ()))
+\end{lstlisting}
+
+\section{Написать функцию, которая возвращает первый элемент списка -аргумента, который сам является непустым списком}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, возвращающая первый элемент списка, являющийся списком},
+	label={lst:2-1},
+	language={Lisp},
+]
+(defun get-first-sublist (lst)
+  (cond
+    ((null lst) nil)
+    ((cond ((listp (car lst)) (car lst))))
+    ((get-first-sublist (cdr lst)))))
+\end{lstlisting}
+
+\clearpage
+
+\section{Написать функцию, которая выбирает из заданного списка только те числа, которые больше 1 и меньше 10. (Вариант: между двумя заданными границами)}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, выбирающая из списка только те числа между двумя заданными границами},
+	label={lst:3-1},
+	language={Lisp},
+]
+(defun all-between-internal (lst a b result)
+  (cond
+    ((null lst) result)
+    ((all-between-internal
+        (cdr lst)
+        a
+        b
+        (cond
+          ((cond
+            ((>= (car lst) a) (<= (car lst) b)))
+             (cons (car lst) result))
+          (result))))))
+
+(defun all-between (lst a b)
+  (all-between-internal lst a b nil))
+\end{lstlisting}
+
+\section{Напишите рекурсивную функцию, которая умножает на заданное число-аргумент все числа из заданного списка-аргумента, когда...}
+
+\subsection{все элементы списка -- числа}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, умножающая на заданное число все числа из списка чисел},
+	label={lst:4-1},
+	language={Lisp},
+]
+(defun mulall-internal (lst num res)
+  (cond ((null lst) res)
+        ((mulall-internal
+            (cdr lst)
+            num
+            (cons (* num (car lst)) res)))))
+
+(defun mulall (lst num)
+  (mulall-internal lst num ()))
+\end{lstlisting}
+
+\clearpage
+
+\subsection{элементы списка -- любые объекты}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, умножающая на заданное число все числа из списка},
+	label={lst:4-2},
+	language={Lisp},
+]
+(defun mulall-internal (lst num res)
+  (cond
+    ((null lst) res)
+    ((symbolp (car lst))
+      (mulall-internal (cdr lst) num (cons (car lst) res)))
+    ((numberp (car lst))
+      (mulall-internal
+        (cdr lst)
+        num
+        (cons (* num (car lst)) res)))
+    ((consp (car lst))
+      (mulall-internal
+        (cdr lst)
+        num
+        (cons
+          (mulall-internal (car lst) num ())
+          res)))))
+
+(defun mulall (lst num)
+  (mulall-internal lst num ()))
+\end{lstlisting}
+
+\section{Напишите функцию, select-between, которая из списка-аргумента, содержащего только числа, выбирает только те, которые расположены между двумя указанными границами аргументами и возвращает их в виде списка}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, вычисляющая сумму чисел заданного одноуровневого смешанного списка},
+	label={lst:5-1},
+	language={Lisp},
+]
+(defun check-border (x a b)
+  (and (>= x a) (<= x b)) )
+
+(defun select-between (lst a b)
+  (cond
+    ((null lst) ())
+    ((check-border (car lst) a b)
+      (cons (car lst) (select-between (cdr lst) a b)))
+    ((select-between (cdr lst) a b))))
+\end{lstlisting}
+
+\section{Написать рекурсивную версию (с именем rec-add) вычисления суммы чисел заданного списка: ...}
+
+\subsection{одноуровневого смешанного}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, вычисляющая сумму чисел заданного одноуровневого смешанного списка},
+	label={lst:6-1},
+	language={Lisp},
+]
+(defun rec-add-internal (lst sum)
+  (cond
+    ((null lst) sum)
+    ((rec-add-internal
+      (cdr lst)
+      (cond
+        ((numberp (car lst)) (+ sum (car lst)))
+        (sum))))))
+
+(defun rec-add (lst)
+	(rec-add-internal lst 0))
+\end{lstlisting}
+
+\subsection{структурированного}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, вычисляющая сумму чисел заданного структурированного списка},
+	label={lst:6-2},
+	language={Lisp},
+]
+(defun rec-add-internal (lst sum)
+  (cond
+    ((null lst) sum)
+    ((numberp (car lst))
+      (rec-add-internal (cdr lst) (+ sum (car lst))))
+    ((null (car lst))
+      (rec-add-internal (cdr lst) sum))
+    ((rec-add-internal
+      (cons (caar lst) (cons (cdar lst) (cdr lst)))
+      sum))))
+
+(defun rec-add (lst)
+  (rec-add-internal lst 0))
+\end{lstlisting}
+
+\clearpage
+
+\section{Написать рекурсивную версию с именем recnth функции nth}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Рекурсивная реализация функции nth},
+	label={lst:7-1},
+	language={Lisp},
+]
+(defun rec-nth (n lst)
+  (cond
+    ((null lst) nil)
+    ((= n 0) (car lst))
+    ((rec-nth (- n 1) (cdr lst)))))
+\end{lstlisting}
+
+\section{Написать рекурсивную функцию allodd, которая возвращает t когда все элементы списка нечетные}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, проверяющая, являются ли все элементы списка нечетными},
+	label={lst:8-1},
+	language={Lisp},
+]
+(defun alloddr (lst)
+  (cond
+    ((null lst) T)
+    ((oddp (car lst)) (alloddr (cdr lst)))))        
+\end{lstlisting}
+
+\section{Написать рекурсивную функцию, которая возвращает первое нечетное число из списка (структурированного), возможно создавая некоторые вспомогательные функции}
+
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, возвращающая первый нечетный элемент структурированного списка},
+	label={lst:9-1},
+	language={Lisp},
+]
+(defun first-odd (lst)
+  (cond
+    ((null lst) nil)
+    ((numberp (car lst))
+      (cond 
+        ((oddp (car lst)) (car lst))
+        ((first-odd (cdr lst)))))
+    ((consp (car lst))
+      (first-odd (cons (caar lst) (cons (cdar lst) (cdr lst)))))
+    ((first-odd (cdr lst)))))
+\end{lstlisting}
+
+\section{Используя cons-дополняемую рекурсию с одним тестом завершения, написать функцию которая получает как аргумент список чисел, а возвращает список квадратов этих чисел в том же порядке}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, возводящая все элементы списка чисел в квадрат},
+	label={lst:10-1},
+	language={Lisp},
+]
+(defun square-lst (lst)
+  (cond
+    ((null lst) Nil)
+    ((cons
+      (* (car lst) (car lst))
+      (square-lst (cdr lst))))))
+\end{lstlisting}
