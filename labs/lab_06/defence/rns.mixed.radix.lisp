@@ -36,8 +36,7 @@
       (setf
         (aref res cur)
         (get-a rns-num rns res cur))
-      (rns-to-dec-int rns-num rns res (1+ cur))
-      res))))
+      (rns-to-dec-int rns-num rns res (1+ cur))))))
 
 (defun first-n-prod (arr n &optional (initial-value 1))
   (cond ((zerop n) initial-value)

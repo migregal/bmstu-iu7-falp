@@ -20,9 +20,12 @@
   (cond
     ((null (cdr m)) nil)
     ((floats-rougly-equal-p (nth n (car m)) 0.0 1e-6)
-      (let ((idx (1+ (get-first-non-zero-i (cdr m) n))))
-        (or (rotatef (nth 0 m) (nth idx m))
-            (rotatef (nth 0 v) (nth idx v)))))))
+      (let ((idx (get-first-non-zero-i (cdr m) n)))
+        (cond
+          ((null idx) (throw 'result 'singular))
+          ((or (rotatef (nth 0 m) (nth (1+ idx) m))
+               (rotatef (nth 0 v) (nth (1+ idx) v)))))))))
+
 
 (defun zerofy-col (m v rel rel-v col_i)
   (extract-vector
@@ -68,4 +71,5 @@
     (reduce-to-triangle (rotate180 (car res)) (reverse (cdr res)))))
 
 (defun gauss (m v)
-  (reverse (cdr (get-diagonal-matrix m v))))
+  (catch 'result
+    (reverse (cdr (get-diagonal-matrix m v)))))

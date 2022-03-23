@@ -1,4 +1,4 @@
-(load "gauss.lisp")
+(load "gauss.swap.lisp")
 
 (ql:quickload "fiveam")
 
