@@ -5,7 +5,7 @@
 (defun new-rns (base)
   (let* ((n (reduce #'* base))
          (m (mapcar #'(lambda (x) (/ n x)) base))
-         (b (mapcar #'(lambda (mi basei) (solver mi basei)) m base)))
+         (b (mapcar #'(lambda (mi basei) (sol mi basei)) m base)))
       (make-rns :base base :n n :m m :b b)))
 
 (defun dec-to-rns (num rns)
@@ -29,14 +29,14 @@
 
 (defvar base2 (new-rns '(2 3 5 7 11 13)))
 
-; tests:solver
+; tests:sol
 
-(fiveam:test solver
-  (fiveam:is (equalp (solver 35 3) 2))
-  (fiveam:is (equalp (solver 21 5) 1))
-  (fiveam:is (equalp (solver 15 7) 1)))
+(fiveam:test sol
+  (fiveam:is (equalp (sol 35 3) 2))
+  (fiveam:is (equalp (sol 21 5) 1))
+  (fiveam:is (equalp (sol 15 7) 1)))
 
-; tests:solver
+; tests:sol
 
 ; tests:dec-to-rns
 

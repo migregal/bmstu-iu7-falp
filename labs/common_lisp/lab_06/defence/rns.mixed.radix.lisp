@@ -12,7 +12,7 @@
   (cond
     ((minusp j) x_i)
     ((*
-      (solver (aref (rns-base rns) j) p_i)
+      (sol (aref (rns-base rns) j) p_i)
       (- (get-a-a rns arr x_i (1- j) p_i) (aref arr j))))))
 
 (defun get-a (rns-num rns arr i)
@@ -21,7 +21,7 @@
     ((not (zerop (aref arr i))) (aref arr i))
     ((mod
       (*
-        (solver
+        (sol
           (aref (rns-base rns) (1- i))
           (aref (rns-base rns) i))
         (-
@@ -67,14 +67,14 @@
 
 (defvar base2 (new-rns '(2 3 5 7 11 13)))
 
-; tests:solver
+; tests:sol
 
-(fiveam:test solver
-  (fiveam:is (equalp (solver 35 3) 2))
-  (fiveam:is (equalp (solver 21 5) 1))
-  (fiveam:is (equalp (solver 15 7) 1)))
+(fiveam:test sol
+  (fiveam:is (equalp (sol 35 3) 2))
+  (fiveam:is (equalp (sol 21 5) 1))
+  (fiveam:is (equalp (sol 15 7) 1)))
 
-; tests:solver
+; tests:sol
 
 ; tests:dec-to-rns
 
