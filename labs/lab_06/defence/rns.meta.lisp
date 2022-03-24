@@ -19,12 +19,11 @@
                 ,(aref (rns-base rns) cur)
                 ,(aref (rns-base rns) i)))))
 
-(declaim (ftype (function (vector rns number) t) gen-formula))
-
-(defun gen-formula-int (rns-num rns i &optional (res (aref rns-num i)) (j (1- i)))
+(defun gen-formula (rns-num rns i &optional (res (aref rns-num i)) (j (1- i)))
     (cond
-      ((minusp j) res)
-      ((gen-formula-int
+      ((zerop i) (aref rns-num 0))
+      ((minusp j) `(mod ,res ,(aref (rns-base rns) i)))
+      ((gen-formula
         rns-num
         rns
         i
@@ -34,13 +33,6 @@
                 ,res
                 ,(gen-formula rns-num rns (- i j 1))))
         (1- j)))))
-
-(defun gen-formula (rns-num rns i)
-    (cond ((zerop i) (aref rns-num 0))
-          (`(mod
-                ,(gen-formula-int rns-num rns i)
-                ,(aref (rns-base rns) i)
-            ))))
 
 (defun gen-i (rns-num rns i &optional (res '()))
   (cond ((zerop i)
@@ -106,19 +98,6 @@
   (fiveam:is (equalp (dec-to-rns 17128 base2) '#(0 1 3 6 1 7))))
 
 ; tests:dec-to-rns
-
-; tests:gen-formula-int
-
-(fiveam:test gen-formula-int
-  (fiveam:is (equalp
-                (gen-formula-int #(0 1 0 3) base 1)
-                '(* (SOL 2 3) (- 1 0))))
-  (fiveam:is (equalp
-                (gen-formula-int #(0 1 0 3) base 2)
-                '(* (SOL 3 5) (- (* (SOL 2 5) (- 0 0)) (MOD (* (SOL 2 3) (- 1 0)) 3)))))
-)
-
-; tests:gen-formula-int
 
 ; tests:gen-prefix
 
