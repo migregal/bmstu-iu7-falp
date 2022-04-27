@@ -1,0 +1,267 @@
+\begin{landscape}
+    \setlength{\LTcapwidth}{\linewidth}
+    \begin{longtable}{|c|c|c|}
+        \caption[Сравнение реализаций на Visual Prolog и PostgreSQL]{Сравнение реализаций на Visual Prolog и PostgreSQL} \label{tbl:1-1}\\
+    
+        \hline
+            Задача & Реализация на Visual Prolog & Реализация на PostgreSQL\\
+        \hline
+        \endfirsthead
+    
+        \multicolumn{3}{l}
+        {{\tablename\ \thetable{} -- продолжение}} \\
+        \hline 
+            Задача & Реализация на Visual Prolog & Реализация на PostgreSQL\\
+        \hline
+        \endhead
+        
+        \hline \multicolumn{3}{|r|}{{Продолжение на следующей странице}} \\ \hline
+        \endfoot
+        
+        \hline \multicolumn{3}{|r|}{{Конец таблицы}} \\ \hline
+        \endlastfoot
+
+Описание типов &    
+\begin{lstlisting}
+surname = string
+city, street = string
+house, flat = integer
+phone = string
+\end{lstlisting}&
+НЕ ТРЕБУЕТСЯ\\
+
+\hline
+
+Описание типов &
+\begin{lstlisting}
+address = addr(city, street, house, flat)
+\end{lstlisting}&
+\begin{lstlisting}
+CREATE TABLE addresses (
+    id        SERIAL  PRIMARY KEY
+    , city    VARCHAR
+    , street  VARCHAR
+    , house   INTEGER
+    , flat    INTEGER
+);
+\end{lstlisting} \\
+
+\hline
+
+Описание типов&
+\begin{lstlisting}
+mark = string
+color = string
+price = integer
+bank = string
+id, amount = integer
+\end{lstlisting}&
+НЕ ТРЕБУЕТСЯ\\
+
+\hline
+
+Описание предиката&
+\begin{lstlisting}
+person(surname, phone, address)
+\end{lstlisting}&
+\begin{lstlisting}
+CREATE TABLE persons (
+    id          SERIAL  PRIMARY KEY
+    , surname   VARCHAR
+    , phone     VARCHAR
+    , addr_id   SERIAL  NOT NULL
+    , FOREIGN KEY (addr_id) 
+        REFERENCES addresses(id)
+        ON DELETE CASCADE
+);
+\end{lstlisting} \\
+
+\hline
+
+Описание предиката&
+\begin{lstlisting}
+car(surname, mark, color, price)
+\end{lstlisting}&
+\begin{lstlisting}
+CREATE TABLE cars (
+    id          SERIAL    PRIMARY KEY
+    , mark      VARCHAR
+    , color     VARCHAR
+    , price     DECIMAL
+    , owner_id  SERIAL    NOT NUll
+    , FOREIGN KEY (owner_id) 
+        REFERENCES persons(id) 
+        ON DELETE CASCADE
+);
+\end{lstlisting} \\
+
+\hline
+
+Описание предиката&
+\begin{lstlisting}
+bank_depositor(surname, bank, id, amount)
+\end{lstlisting}&
+\begin{lstlisting}
+CREATE TABLE bank_depositors (
+    id            SERIAL  PRIMARY KEY
+    , bank        VARCHAR
+    , account_id  INTEGER
+    , amount      DECIMAL
+    , investor_id SERIAL  NOT NULL
+    , FOREIGN KEY (investor_id) 
+        REFERENCES persons(id)
+        ON DELETE CASCADE
+);
+\end{lstlisting} \\
+
+\hline
+
+Описание предиката&
+\begin{lstlisting}
+man_by_car(mark, color, surname, city, phone, bank)
+\end{lstlisting}&
+НЕ ТРЕБУЕТСЯ\\
+
+\hline
+
+Описание фактов&
+\begin{lstlisting}
+person("Andreev", "+79999999999", 
+    addr("Moscow", "Lesnaya", 12, 2)).
+person("Borisov", "+71111111111", 
+    addr("Moscow", "Lesnaya", 13, 87)).
+person("Dmitriev", "+73333333333",    
+    addr("Ekaterinburg", "Kamennaya", 13, 87)).
+person("Fedorov", "+66666666666", 
+    addr("Moscow", "Hospital'naya", 123, 87)).
+\end{lstlisting}&
+\begin{lstlisting}
+INSERT INTO addresses(city, street, house, flat)
+VALUES
+    ('Moscow', 'Lesnaya', 12, 2),
+    ('Moscow', 'Lesnaya', 13, 87),
+    ('Ekaterinburg', 'Kamennaya', 13, 87),
+    ('Moscow', 'Hospital`naya', 123, 87);
+
+INSERT INTO persons(surname, phone, addr_id)
+VALUES
+    ('Andreev', '+79999999999', 1),
+    ('Borisov', '+71111111111', 2),
+    ('Dmitriev', '+73333333333', 3),
+    ('Fedorov', '+66666666666', 4);
+\end{lstlisting} \\
+
+\hline
+
+Описание фактов&
+\begin{lstlisting}
+car("Andreev", "bmw", "green", 1000).
+car("Andreev", "volkswagen", "red", 10000).
+car("Dmitriev", "lada", "black", 20000).
+car("Fedorov", "lada", "black", 20000).
+car("Fedorov", "opel", "white", 10).
+\end{lstlisting}&
+\begin{lstlisting}
+INSERT INTO cars
+    (mark, color, price, owner_id)
+VALUES
+    ('bmw', 'green', 1000, 1),
+    ('volkswagen', 'red', 10000, 1),
+    ('lada', 'black', 20000, 3),
+    ('lada', 'black', 20000, 4),
+    ('opel', 'white', 10, 4);
+\end{lstlisting} \\
+
+\hline
+
+Описание фактов&
+\begin{lstlisting}
+bank_depositor("Andreev", "Sber", 22, 1000).
+bank_depositor("Borisov", "Sber", 33, 10000).
+bank_depositor("Dmitriev", "Alfa", 44, 20000).
+bank_depositor("Fedorov", "Sber", 238, 10).
+bank_depositor("Borisov", "Maze", 1, 10000).
+\end{lstlisting}&
+\begin{lstlisting}
+INSERT INTO bank_depositors
+    (bank, account_id, amount, investor_id)
+VALUES
+    ('Sber', 22, 1000, 1),
+    ('Sber', 33, 10000, 2),
+    ('Alfa', 44, 20000, 3),
+    ('Sber', 238, 10, 4),
+    ('Maze', 1, 10000, 2);
+\end{lstlisting} \\
+
+\hline
+
+Описание правила&
+\begin{lstlisting}
+man_by_car(Mark, Color, Surname, City, Phone, Bank) :-
+    car(Surname, Mark, Color, _),
+    person(Surname, Phone, addr(City, _, _, _)),
+    bank_depositor(Surname, Bank, _, _).
+\end{lstlisting}&
+НЕ СУЩЕСТВУЕТ\\
+
+\hline
+
+Описание правила&
+\begin{lstlisting}
+car_by_phone(Phone, Surname, Mark, Price) :- 
+    person(Surname, Phone, _), 
+    car(Surname, Mark, _, Price).
+\end{lstlisting}&
+НЕ СУЩЕСТВУЕТ\\
+
+\hline
+
+Описание правила&
+\begin{lstlisting}
+only_mark_by_phone(Phone, Mark) :- 
+    car_by_phone(Phone, _, Mark, _).
+\end{lstlisting}&
+НЕ СУЩЕСТВУЕТ\\
+
+\hline
+
+Задание вопроса&
+\begin{lstlisting}
+man_by_car("bmw", "green", Surname, City, Phone, Bank).
+\end{lstlisting}&
+\begin{lstlisting}
+SELECT 
+    mark, color, surname, 
+    city, phone, bank, price
+FROM persons p
+JOIN (SELECT * FROM addresses) a
+ON p.addr_id = a.id
+JOIN (SELECT * FROM cars) c
+ON p.id = c.owner_id
+JOIN (SELECT * FROM bank_depositors) b
+ON p.id = b.investor_id
+WHERE mark = 'bmw' AND color = 'green';
+\end{lstlisting} \\
+
+\hline
+
+Задание вопроса&
+\begin{lstlisting}
+only_mark_by_phone("+79999999999", Mark)
+\end{lstlisting}&
+\begin{lstlisting}
+SELECT mark FROM (
+    SELECT mark, phone FROM persons p
+    JOIN (SELECT * FROM addresses) a
+    ON p.addr_id = a.id
+    JOIN (SELECT * FROM cars) c
+    ON p.id = c.owner_id
+    JOIN (SELECT * FROM bank_depositors) b
+    ON p.id = b.investor_id
+) c
+WHERE c.phone = '+79999999999';
+\end{lstlisting} \\
+
+  
+    \end{longtable}
+\end{landscape}
