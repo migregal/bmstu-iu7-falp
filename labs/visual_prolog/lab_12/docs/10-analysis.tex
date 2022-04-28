@@ -1,0 +1,332 @@
+\chapter{Практическая часть}
+
+\textbf{Задание 12:} составить программу, то есть модель предметной области – базу знаний, объединив в ней информацию – знания:
+
+\begin{itemize}
+    \item <<Телефонный справочник>>: Фамилия, №тел, Адрес – структура (Город, Улица, №дома, №кв)
+    \item <<Автомобили>>: Фамилия\_владельца, Марка, Цвет, Стоимость и др.
+    \item <<Вкладчики банков>>: Фамилия, Банк, счет, сумма, др.
+\end{itemize}
+
+Владелец может иметь несколько телефонов, автомобилей, вкладов (Факты).
+Используя правила, обеспечить возможность поиска:
+
+
+\begin{enumerate}
+    \item A. По № телефона найти: Фамилию, Марку автомобиля, Стоимость автомобиля (может быть несколько)
+
+        B. Используя сформированное в предыдущем пункте правило, по №телефона найти только Марку автомобиля (автомобилей может быть несколько)
+
+    \item Используя простой, не составной вопрос: по Фамилии (уникальна в городе, но в разных городах есть однофамильцы) и Городу проживания найти: Улицу, проживания, Банки, в которых есть вклады и №телефона.
+\end{enumerate}
+
+Для задания 1 и 2 для одного из вариантов ответов, и для A. и для B., описать словесно порядок поиска ответа на вопрос, указав, как выбираются знания, и, при этом, для каждого этапа унификации, выписать подстановку – наибольший общий унификатор, и соответствующие примеры термов.
+
+\listingfile{lab12.pro}{main1-1}{Prolog}{Реализация базы знаний, Часть 1}{linerange={1-37}}
+
+\clearpage
+
+\listingfile{lab12.pro}{main1-2}{Prolog}{Реализация базы знаний, Часть 1}{linerange={38-52}, firstnumber=38}
+
+В Таблицах \ref{tbl:1-1}-\ref{tbl:1-2} представлен порядок поиска ответа на вопрос для запросов \(1\) и \(2\).
+
+\begin{landscape}
+    \setlength{\LTcapwidth}{\linewidth}
+    \begin{longtable}{|c|c|c|c|c|}
+        \caption[Порядок формирования результата для 1-го вопроса]{Порядок формирования результата для 1-го вопроса} \label{tbl:1-1}\\
+    
+        \hline
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\
+        \endfirsthead
+    
+        \multicolumn{5}{l}
+        {{\tablename\ \thetable{} -- продолжение}} \\
+        \hline 
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\\hline
+        \endhead
+        
+        \hline \multicolumn{5}{|r|}{{Продолжение на следующей странице}} \\ \hline
+        \endfoot
+        
+        \hline \multicolumn{5}{|r|}{{Конец таблицы}} \\ \hline
+        \endlastfoot
+        
+        \hline
+              & car\_by\_phone("+79999999999"{}, & Прямой ход & car\_by\_phone( & \\
+              & Surname, Mark, Price) и person( & Переход к & "+79999999999"{}, &\\
+            1 & "Andreev"{}, "+79999999999"{}, & след. предл. & Surname, Mark, &\\
+			  & addr("Moscow"{}, "Lesnaya"{}, 12, 2)). & & Price) & \\
+			  & Главные функторы не равны & & & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+			  & car\_by\_phone("+79999999999"{}, & Прямой ход & car\_by\_phone( & \\
+              & Surname, Mark, Price) и person( & Переход к & "+79999999999"{}, &\\
+            5 & "bmw"{}, "green"{}, 1000). & след. предл. & Surname, Mark, &\\
+              & & & Price) & \\
+			  & Главные функторы не равны & & & \\
+			\hline 
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+			  & car\_by\_phone("+79999999999"{}, & Прямой ход & car\_by\_phone( & \\
+              & Surname, Mark, Price) и & Переход к & "+79999999999"{}, &\\
+            9 & bank\_depositor("Andreev"{},& след. предл. & Surname, Mark, &\\
+              & "Sber"{}, 22, 1000). & & Price) & \\
+			  & Главные функторы не равны & & & \\
+			\hline 
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+			  & car\_by\_phone("+79999999999"{}, & Прямой ход & person(Surname, & Phone = "+79999999999"{}\\
+            14 & Surname, Mark, Price) и & унификация & "+79999999999"{}, \_), & \\
+              & car\_by\_phone(Phone, & person(Surname, & car(Surname, Mark, &\\
+              & Surname, Mark, Price). & "+79999999999"{}, \_) & \_, Price) &\\
+			\hline
+			  & person(Surname, "+79999999999"{}, \_) & Прямой ход & car(Surname, Mark, & Phone = "+79999999999"{}\\
+            15 & и person("Andreev"{}, & унификация & \_, Price) & Surname = "Andreev"{} \\
+              & "+79999999999"{}, & car("Andreev"{}, &  & \\
+              & addr("Moscow"{}, "Lesnaya"{}, 12, 2)) & Mark, \_, Price) &  & \\
+			\hline
+			  & car("Andreev"{}, Mark, \_, Price) & Прямой ход & car("Andreev"{}, Mark, & Phone = \\
+              &  и person("Andreev"{}, & Переход к & \_, Price) & "+79999999999"{} \\
+            16 & "+79999999999"{}, & след. предл. &  & Surname = \\
+              & addr("Moscow"{}, "Lesnaya"{}, 12, 2)) & & & "Andreev"{}\\
+			  & Главные функторы не равны & & & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+			  & car("Andreev"{}, Mark, \_, Price) & Найден ответ &  & Phone = "+79999999999"{} \\
+            20  &  и car("Andreev"{}, "bmw"{}, &  Откат & & Surname = "Andreev"{} \\
+              & "green"{}, 1000) & &  & Mark = "bmw"{} \\
+              & & & & Price = 1000 \\
+			\hline
+			  & car("Andreev"{}, Mark, \_, Price) & Найден ответ &  & Phone = "+79999999999"{} \\
+            21  &  и car("Andreev"{}, "volkswagen"{}, & Откат & & Surname = "Andreev"{} \\
+              & "red"{}, 10000) & &  & Mark = "volkswagen"{} \\
+              & & & & Price = 10000 \\
+			\hline
+			  & car("Andreev"{}, Mark, \_, Price) & Прямой ход & car("Andreev"{}, Mark, & Phone = "+79999999999"{} \\
+            22  &  и car("Dmitriev"{}, "lada"{}, & Переход к & \_, Price) & Surname = "Andreev"{} \\
+              & "black"{}, 20000) & след. предл. & & \\
+              & Компоненты попарно не унифицируемы & & & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+			  & car("Andreev"{}, Mark, \_, Price) & Прямой ход & car("Andreev"{}, Mark, & Phone = "+79999999999"{} \\
+            24  & и bank\_depositor("Andreev"{}, & Переход к & \_, Price) & Surname = "Andreev"{} \\
+              & "Sber"{}, 22, 1000) & след. предл. & & \\
+              & Главные функторы не равны & & & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+            \hline
+			  & car("Andreev"{}, Mark, \_, Price) & Откат. & person(Surname, & Phone = "+79999999999"{} \\
+            31  & и data\_by\_surname\_and\_city( & Продолж. & "+79999999999"{}, \_), & \\
+              & Surname, City, Street, Bank, Phone) & отн. 15 & car(Surname, Mark, & \\
+              & Главные функторы не равны & & \_, Price) & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+			  & car("Andreev"{}, Mark, \_, Price) & Откат. & person(Surname, & \\
+            46  & и data\_by\_surname\_and\_city( & Продолж. & "+79999999999"{}, \_), & \\
+              & Surname, City, Street, Bank, Phone) & отн. 14 & car(Surname, Mark, & \\
+              & Главные функторы не равны & & \_, Price) & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+			  & car\_by\_phone("+79999999999"{}, & Завершение & car\_by\_phone( & \\
+            48 & Surname, Mark, Price) & работы & "+79999999999"{}, & \\
+              & и data\_by\_surname\_and\_city( & 2 подст. & Surname, Mark, & \\
+              & Surname, City, Street, Bank, Phone) & в рез-те & Price) & \\
+              & Главные функторы не равны & & & \\
+    \end{longtable}
+\end{landscape}
+
+\begin{landscape}
+    \setlength{\LTcapwidth}{\linewidth}
+    \begin{longtable}{|c|c|c|c|c|}
+        \caption[Порядок формирования результата для 2-го вопроса]{Порядок формирования результата для 2-го вопроса} \label{tbl:1-2}\\
+    
+        \hline
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\
+        \endfirsthead
+    
+        \multicolumn{5}{l}
+        {{\tablename\ \thetable{} -- продолжение}} \\
+        \hline 
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\\hline
+        \endhead
+        
+        \hline \multicolumn{5}{|r|}{{Продолжение на следующей странице}} \\ \hline
+        \endfoot
+        
+        \hline \multicolumn{5}{|r|}{{Конец таблицы}} \\ \hline
+        \endlastfoot
+        
+        \hline
+              & only\_mark\_by\_phone( & Прямой ход & only\_mark\_by\_phone( & \\
+              & "+79999999999"{}, Mark) и person( & Переход к & "+79999999999"{}, Mark) &\\
+            1 & "Andreev"{}, "+79999999999"{}, & след. предл. &  &\\
+			  & addr("Moscow"{}, "Lesnaya"{}, 12, 2)) & & & \\
+			  & Главные функторы не равны & & & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+			  & only\_mark\_by\_phone( & Прямой ход & car\_by\_phone( & Phone = "+79999999999"{}\\
+            15 & "+79999999999"{}, Mark) и  & & "+79999999999"{}, &\\
+              & only\_mark\_by\_phone( & &  \_, Mark, \_) &\\
+			  & Phone, Mark) & & & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+			  & car\_by\_phone("+79999999999"{}, & Прямой ход & person(Surname,  & Phone = "+79999999999"{} \\
+            29 & \_, Mark, \_) и  & & "+79999999999"{}, \_), & \\
+              & car\_by\_phone(Phone, Surname, & & car(Surname, Mark, \_, \_) &\\
+			  &  Mark, Price) & & & \\
+			\hline
+			  & person(\_, "+79999999999"{}, \_) & Прямой ход & car("Andreev"{}, Mark, \_, \_) & Phone = "+79999999999"{}\\
+            30 & и person("Andreev"{},"+79999999999"{}, & & & \textit{Surname = "Andreev"{}} \\
+              & addr("Moscow"{}, "Lesnaya"{}, 12, 2)) & &  & \\
+            \hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+			  & car("Andreev"{}, Mark, \_, \_) & Найден ответ & & Phone = "+79999999999"{}\\
+            35 & и car("Andreev"{}, "bmw"{}, & Откат & & \textit{Surname = "Andreev"{}} \\
+              & "green"{}, 1000) & & & Mark = "bmw"{} \\
+            \hline
+			  & car("Andreev"{}, Mark, \_, \_) & Найден ответ & & Phone = "+79999999999"{}\\
+            36 & и car("Andreev"{}, "volkswagen"{}, & Откат & & \textit{Surname = "Andreev"{}} \\
+              & "red"{}, 10000) & & & Mark = "volkswagen"{} \\
+            \hline
+            \dots & \dots & \dots & \dots & \dots \\
+            \hline
+			  & only\_mark\_by\_phone( & Завершение & only\_mark\_by\_phone( & \\
+            64 & "+79999999999"{}, Mark) & работы & "+79999999999"{}, Mark) & \\
+              & и data\_by\_surname\_and\_city( & 2 подст. & & \\
+              & Surname, City, Street, Bank, Phone) & в рез-те & & \\
+              & Главные функторы не равны & & & \\
+    \end{longtable}
+\end{landscape}
+
+\textbf{Задание 12 (2):} Используя  базу знаний, хранящую знания:
+\begin{itemize}
+	\item «Телефонный справочник»: Фамилия, №тел, Адрес – структура (Город, Улица, №дома, №кв),
+	\item «Автомобили»: Фамилия\_владельца, Марка, Цвет, Стоимость, и др.,
+	\item «Вкладчики банков»: Фамилия, Банк, счет, сумма, др.
+\end{itemize}
+
+Владелец может иметь несколько телефонов, автомобилей, вкладов (Факты). В разных городах есть однофамильцы, в одном городе – фамилия уникальна.
+
+Используя конъюнктивное правило и простой вопрос, обеспечить возможность поиска:
+
+По Марке и Цвету автомобиля найти Фамилию, Город, Телефон и Банки, в которых владелец автомобиля имеет вклады. Лишней информации не находить и не передавать!!!
+
+Владельцев может быть несколько (не более 3-х), один и ни одного.
+
+\begin{enumerate}
+	\item Для каждого из трех вариантов словесно подробно описать порядок формирования ответа (в виде таблицы). При этом, указать – отметить моменты очередного запуска алгоритма унификации и полный результат его работы. Обосновать следующий шаг работы системы. Выписать унификаторы – подстановки. Указать моменты, причины и результат отката, если он есть.
+	\item Для случая нескольких владельцев (2-х): 
+	приведите примеры (таблицы) работы системы при разных порядках следования в БЗ  процедур, и знаний в них: («Телефонный справочник», «Автомобили», «Вкладчики банков», или: «Автомобили», «Вкладчики банков», «Телефонный справочник»). Сделайте вывод: Одинаковы ли: множество работ и объем работ в разных случаях?
+	\item Оформите 2 таблицы, демонстрирующие порядок работы алгоритма унификации вопроса и подходящего заголовка правила (для двух случаев из пункта 2) и укажите результаты его работы: ответ и побочный эффект.
+\end{enumerate}
+
+\listingfile{lab12-2.pro}{main2-1}{Prolog}{Реализация базы знаний}{}
+
+\begin{landscape}
+    \setlength{\LTcapwidth}{\linewidth}
+    \begin{longtable}{|c|c|c|c|c|}
+        \caption[Порядок формирования результата для 2-го вопроса]{Порядок формирования результата для 2-го вопроса} \label{tbl:1-3}\\
+    
+        \hline
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\
+        \endfirsthead
+    
+        \multicolumn{5}{l}
+        {{\tablename\ \thetable{} -- продолжение}} \\
+        \hline 
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\\hline
+        \endhead
+        
+        \hline \multicolumn{5}{|r|}{{Продолжение на следующей странице}} \\ \hline
+        \endfoot
+        
+        \hline \multicolumn{5}{|r|}{{Конец таблицы}} \\ \hline
+        \endlastfoot
+        
+        \hline
+              & man\_by\_car("lada"{}, "black"{}, & Прямой ход & man\_by\_car("lada"{}, "black"{}, & \\
+              & Surname, City, Phone, Bank) & Переход к &  Surname, City, Phone, Bank) &\\
+            1 & и person("Andreev"{},  & след. предл. &  &\\
+			  & "+79999999999"{}, addr( & & & \\
+			  & "Moscow"{}, "Lesnaya"{}, 12, 2)) & & & \\
+			  & Главные функторы не равны & & & \\
+ 			\hline
+ 			\dots & \dots & \dots & \dots & \dots \\
+ 			\hline
+              & man\_by\_car("lada"{}, "black"{}, & Прямой ход & car(Surname, "lada"{}, "black"{}, \_), & Mark = "lada"{}\\
+              & Surname, City, Phone, Bank) & & person(Surname, Phone,  & Color = "black"{}\\
+            15 & и & & addr(City, \_, \_, \_)), &\\
+			  & man\_by\_car(Mark, Color, & & bank\_depositor(Surname, & \\
+			  & Surname, City, Phone, Bank) & & Bank, \_, \_) & \\
+ 			\hline
+ 			\dots & \dots & \dots & \dots & \dots \\
+ 			\hline
+              & car(Surname, "lada"{}, "black"{}, \_) & Прямой ход & person("Dmitriev"{}, Phone, & Mark = "lada"{}\\
+            23 & и & & addr(City, \_, \_, \_)), & Color = "black"{}\\
+              & car("Dmitriev"{}, "lada"{}, & & bank\_depositor("Dmitriev"{}, & Surname = "Dmitriev"{}\\
+			  & "black"{}, 20000) & & Bank, \_, \_) & \\
+			\hline
+ 			\dots & \dots & \dots & \dots & \dots \\
+ 			\hline
+              & person("Dmitriev"{}, Phone, addr( & Прямой ход & bank\_depositor("Dmitriev"{}, & Mark = "lada"{}\\
+              & City, \_, \_, \_)) и person( & & Bank, \_, \_) & Color = "black"{}\\
+            34 & "Dmitriev"{}, "+73333333333"{}, & & & Surname = "Dmitriev"{}\\
+              & addr("Ekaterinburg"{}, & & & Phone = "+73333333333"{}\\
+			  & "Kamennaya"{}, 13, 87)) & & & City = "Ekaterinburg"{}\\
+			\hline
+ 			\dots & \dots & \dots & \dots & \dots \\
+ 			\hline
+              & bank\_depositor("Dmitriev"{}, & Найден ответ &  & Mark = "lada"{}\\
+              & Bank, \_, \_) и & Откат & & Color = "black"{}\\
+            58 & и & & & Surname = "Dmitriev"{}\\
+              & bank\_depositor("Dmitriev"{}, & & & Phone = "+73333333333"{}\\
+			  & "Alfa"{}, 44, 20000) & & & City = "Ekaterinburg"{}\\
+			  & & & & Bank = "Alfa"{}\\
+			\hline
+ 			\dots & \dots & \dots & \dots & \dots \\
+ 			\hline
+              & car(Surname, "lada"{}, "black"{}, \_) & Прямой ход & person("Dmitriev"{}, Phone, & Mark = "lada"{}\\
+            73 & и & & addr(City, \_, \_, \_)), & Color = "black"{}\\
+              & car("Fedorov"{}, "lada"{}, & & bank\_depositor("Fedorov"{}, & Surname = "Fedorov"{}\\
+			  & "black"{}, 20000) & & Bank, \_, \_) & \\
+			\hline
+ 			\dots & \dots & \dots & \dots & \dots \\
+ 			\hline
+              & person("Fedorov"{}, Phone, addr( & Прямой ход & bank\_depositor("Fedorov"{}, & Mark = "lada"{}\\
+              & City, \_, \_, \_)) и person( & & Bank, \_, \_) & Color = "black"{}\\
+            77 & "Fedorov"{}, "+66666666666"{}, & & & Surname = "Fedorov"{}\\
+              & addr("Moscow"{}, & & & Phone = "+66666666666"{}\\
+			  & "Hospital'naya"{}, 123, 87)) & & & City = "Moscow"{}\\
+			\hline
+ 			\dots & \dots & \dots & \dots & \dots \\
+ 			\hline
+              & bank\_depositor("Fedorov"{}, & Найден ответ &  & Mark = "lada"{}\\
+              & Bank, \_, \_) и & Откат & & Color = "black"{}\\
+            90 & и & & & Surname = "Fedorov"{}\\
+              & bank\_depositor("Fedorov"{}, & & & Phone = "+66666666666"{}\\
+			  & "Sber"{}, 238, 10) & & & City = "Moscow"{}\\
+			  & & & & Bank = "Sber"{}\\
+            \hline
+            \dots & \dots & \dots & \dots & \dots \\
+            \hline
+			  & car(Surname, "lada"{}, "black"{}, \_) & Т.к. откат-ся & person(Surname, Phone, & Mark = "lada"{}\\
+            109 & и data\_by\_surname\_and\_city( & некуда, зав. & addr(City, \_, \_, \_)), & Color = "black"{}\\
+              & man\_by\_car(Mark, Color, & работу, 2 подст. & bank\_depositor(Surname, & \\
+              & Surname, City, Phone, Bank) & в рез-те & Bank, \_, \_) & \\
+              & Главные функторы не равны & & & \\
+    \end{longtable}
+\end{landscape}
