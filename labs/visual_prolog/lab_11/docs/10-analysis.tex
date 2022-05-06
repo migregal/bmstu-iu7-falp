@@ -1,0 +1,84 @@
+\chapter{Практическая часть}
+
+\textbf{Задание 11:} запустить среду \texttt{Visual Prolog 5.2}.  Настроить утилиту \texttt{TestGoal}. Запустить тестовую программу, проанализировать реакцию системы и множество ответов. Разработать свою программу – <<Телефонный справочник>>. Протестировать работы программы.
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Тестовая программа},
+	label={lst:1-1},
+	language={Prolog},
+]
+goal
+  write ("Hello world"), nl.
+\end{lstlisting}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация телефонного справочника},
+	label={lst:1-2},
+	language={Lisp},
+]
+domains
+  name = string
+  phone = integer
+  surname = string
+  
+predicates
+  entry(phone, name, surname)
+
+clauses
+  entry(111, "Alexandr", "Alexandrov").
+  entry(222, "Boris", "Borisov").
+  entry(333, "Michail", "Michailov").
+  entry(444, "Nicholay", "Nickolaev").
+  entry(500, "Oleg", "Olegov").
+  entry(888, "Oleg", "Petrosyan").
+  
+goal
+  entry(Phone, "Oleg", Surname).
+\end{lstlisting}
+
+\clearpage
+
+\textbf{Задание 11(2):} составить программу --- базу знаний, с помощью которой можно определить, например, множество студентов, обучающихся в одном ВУЗе. Студент может одновременно обучаться в нескольких ВУЗах. Привести примеры возможных вариантов вопросов и варианты ответов (не менее 3-х). Описать порядок формирования вариантов ответа.
+\begin{itemize}
+    \item Исходную базу знаний сформировать с помощью только фактов.
+    \item Исходную базу знаний сформировать, используя правила.
+    \item Разработать свою базу знаний (содержание произвольно).
+\end{itemize}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация базы знаний о студентах},
+	label={lst:1-1},
+	language={Lisp},
+]
+domains
+  name, surname, university = string
+ 
+predicates
+  student(name, surname, university)
+  
+clauses
+  student("Andrey", "Andreev", "BMSTU").
+  student("Andrey", "Andreev", "MSU").
+  student("Boris", "Borisov", "BMSTU").
+  student("Dmitriy", "Dmitriev", "BMSTU").
+  student("Fedor", "Fedorov", "MSU").
+  student("Petr", "Petrov", "BMSTU").
+  student("Nikolay", "Nikolaev", University) :- student("Andrey", "Andreev", University), student("Fedor", "Fedorov", University).
+  
+goal
+  student(Name, Surname, "MSU").
+  student("Andrey", "Andreev", University). 
+  student(Name, Surname, "ITMO").
+\end{lstlisting}

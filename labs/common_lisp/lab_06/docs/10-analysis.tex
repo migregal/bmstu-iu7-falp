@@ -1,0 +1,190 @@
+\chapter{Практическая часть}
+
+\section{Напишите функцию, которая уменьшает на 10 все числа из списка-аргумента этой функции}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, проверяющая, является ли список палиндромом},
+	label={lst:1-1},
+	language={Lisp},
+]
+(defun minus10 (lst) 
+  (mapcar (lambda (x) (- x 10)) lst))
+\end{lstlisting}
+
+\section{Напишите функцию, которая умножает на заданное число-аргумент все числа из заданного списка-аргумента, когда\dots}
+
+\subsection{а) все элементы списка -- числа}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, умножающая каждый элемент списка на число},
+	label={lst:2-1},
+	language={Lisp},
+]
+(defun mult-all-numbers (mult lst)
+  (mapcar #'(lambda (el) (* el mult)) lst))
+\end{lstlisting}
+
+\subsection{б) элементы списка -- любые объекты}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, умножающая каждое число из списка на число},
+	label={lst:2-2},
+	language={Lisp},
+]
+(defun compl-mult-all-numbers-rec (mult obj)
+  (cond ((numberp obj) (* obj mult))
+        ((consp obj)
+          (cons
+            (compl-mult-all-numbers-rec mult (car obj))
+            (compl-mult-all-numbers-rec mult (cdr obj))))
+        (obj)))
+
+(defun compl-mult-all-numbers (mult lst)
+  (mapcar #'(lambda (x) (compl-mult-all-numbers-rec mult x)) lst))
+\end{lstlisting}
+
+\section{Написать функцию, которая по своему списку-аргументу lst определяет является ли он палиндромом (то есть равны ли lst и (reverse lst))}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, возводящая все элементы списка в квадрат},
+	label={lst:3-1},
+	language={Lisp},
+]
+(defun palindromp (lst)
+  (every #'= lst (reverse lst)))
+\end{lstlisting}
+
+\section{Написать предикат set-equal, который возвращает t, если два его множества аргумента содержат одни и те же элементы, порядок которых не имеет значения.}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, возводящая все элементы списка в квадрат},
+	label={lst:5-1},
+	language={Lisp},
+]
+(defun my-subsetp (s1 s2)
+  (every
+    #'(lambda (a) (some #'(lambda (b) (= a b)) s2))
+    s1))
+    
+(defun set-equal (set1 set2)
+  (cond
+    ((/= (length set1) (length set2)) nil)
+    ((my-subsetp set1 set2) (my-subsetp set2 set1))))
+\end{lstlisting}
+
+\section{Написать функцию которая получает как аргумент список чисел, а возвращает список
+квадратов этих чисел в том же порядке.}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, возводящая все элементы списка в квадрат},
+	label={lst:5-1},
+	language={Lisp},
+]
+(defun sqrlist (lst)
+  (mapcar #'* lst lst))
+\end{lstlisting}
+
+\section{Напишите функцию, select-between, которая из списка-аргумента, содержащего только числа, выбирает только те, которые расположены между двумя указанными границами аргументами и возвращает их в виде списка}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, выбирающая из списка-аргумента числа, расположенные между двумя указанными границами-аргументами},
+	label={lst:6-1},
+	language={Lisp},
+]
+(defun select-between (from to lst)
+  (mapcan #'(lambda (el)
+              (and (< el to) (> el from) (list el)))
+          lst))
+\end{lstlisting}
+
+\section{Написать функцию, вычисляющую декартово произведение двух своих списков аргументов. (Напомним, что А х В это множество всевозможных пар (a b), где а принадлежит А, а b принадлежит В)}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, вычисляющая декартово произведение элементов списков аргументов},
+	label={lst:7-1},
+	language={Lisp},
+]
+(defun decart (lstA lstB)
+    (mapcan #'(lambda (a)
+                (mapcar #'(lambda (b)
+                            (list x y)) lstB))
+                                        lstA))
+\end{lstlisting}
+
+\section{Почему так реализовано reduce, в чем причина?}
+
+\texttt{(reduce \#'+ ()) -> 0}
+
+Поведение в данном примере обусловлено работой функции \texttt{+}. Эта функция --- функционал, который при 0 количестве аргументов возвращает значение 0. Если подать на вход \texttt{reduce} функцию, которая не может обработать 0 аргументов (например, математическая функция \texttt{cons}), то вызов \texttt{reduce} с пустым списком в качестве второго аргумента вернет ошибку (\texttt{invalid number of arguments: 0}). При этом, если подано более одного аргумента, то \texttt{reduce} выполняет следующие действия:
+\begin{enumerate}
+    \item сохраняет первый элемент списка в область памяти (для определенности назовем ее \texttt{acc});
+    \item для всех остальных элементов списка выполняет переданную в качестве первого аргумента функцию, подавая на вход 2 аргумента (\texttt{acc} и очередной элемент списка) и сохраняя результат в \texttt{acc}.
+\end{enumerate}
+
+Пример упрощенной реализации \texttt{reduce} (в данной реализации опущены проверки аргументов):
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Пример реализации reduce},
+	label={lst:8-1},
+	language={Lisp},
+]
+(defun my-reduce-internal (func lst acc)
+  (cond ((null lst) acc)
+        ((my-reduce-internal func (cdr lst) (funcall func acc (car lst))))))
+
+(defun my-reduce (func lst)
+  (cond ((null lst) (funcall func))
+        ((my-reduce-internal func (cdr lst) (car lst)))))
+\end{lstlisting}
+
+\section{Пусть list-of-list список, состоящий из списков. Написать функцию, которая вычисляет сумму длин всех элементов list-of-list, т.е. например для аргумента ((1 2) (3 4)) -> 4}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Пример реализации reduce},
+	label={lst:9-1},
+	language={Lisp},
+]
+(defun sum-lens (list-of-lists)
+  (reduce #'(lambda (acc lst) (+ acc (length lst)))
+          (cons 0 list-of-lists)))
+\end{lstlisting}

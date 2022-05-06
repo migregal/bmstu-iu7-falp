@@ -1,0 +1,98 @@
+\chapter{Практическая часть}
+
+\textbf{Задание 14:} Создать базу знаний: «ПРЕДКИ», позволяющую наиболее эффективным способом (за меньшее количество шагов, что обеспечивается меньшим количеством предложений БЗ - правил), используя разные варианты (примеры) одного вопроса, определить (указать: какой вопрос для какого варианта):
+
+\begin{enumerate}
+    \item по имени субъекта определить всех его бабушек (предки 2-го колена);
+    \item по имени субъекта определить всех его дедушек (предки 2-го колена);
+    \item по имени субъекта определить всех его бабушек и дедушек (предки 2-го колена);
+    \item по имени субъекта определить его бабушку по материнской линии (предки 2-го колена);
+    \item по имени субъекта определить его бабушку и дедушку по материнской линии (предки 2-го колена).
+\end{enumerate}
+
+Минимизировать количество правил и количество вариантов вопросов. Использовать \textbf{конъюнктивные правила и простой вопрос}.
+
+\textbf{Для одного} из вариантов \textbf{ВОПРОСА} и конкретной БЗ \textbf{составить таблицу},
+отражающую конкретный порядок работы системы, с объяснениями:
+\begin{itemize}
+    \item очередная проблема на каждом шаге и метод ее решения;
+    \item каково новое текущее состояние резольвенты, как получено;
+    \item какие дальнейшие действия? (Запускается ли алгоритм унификации? Каких термов? Почему этих?);
+    \item вывод по результатам очередного шага и дальнейшие действия.
+\end{itemize}
+
+Т.к. резольвента хранится в виде стека, то состояние резольвенты требуется отображать в столбик: вершина -- сверху! Новый шаг надо начинать с нового состояния резольвенты!
+
+\clearpage
+
+\listingfile{main.pro}{1-1}{Prolog}{Реализация базы знаний}{linerange={1-37}}
+
+В Таблице \ref{tbl:1-1} представлен порядок поиска ответа на вопрос 2.
+
+\begin{landscape}
+    \setlength{\LTcapwidth}{\linewidth}
+    \begin{longtable}{|c|c|c|c|c|}
+        \caption[Порядок формирования результата для 1-го вопроса]{Порядок формирования результата для 1-го вопроса} \label{tbl:1-1}\\
+    
+        \hline
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\
+        \endfirsthead
+    
+        \multicolumn{5}{l}
+        {{\tablename\ \thetable{} -- продолжение}} \\
+        \hline 
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\\hline
+        \endhead
+        
+        \hline \multicolumn{5}{|r|}{{Продолжение на следующей странице}} \\ \hline
+        \endfoot
+        
+        \hline \multicolumn{5}{|r|}{{Конец таблицы}} \\ \hline
+        \endlastfoot
+        
+        \hline
+              & grand("Andrey"{}, NameMaGrands, & Прямой ход & grand("Andrey"{}, & \\
+            1 &  "w"{}, \_) и par("Andrey"{}, & Переход к & NameMaGrands, "w"{}, \_) &\\
+              & "Boris"{}, "m"{}) & след. предл. & &\\
+			  & Главные функторы не равны & & & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+			  & grand("Andrey"{}, NameMaGrands, & Прямой ход & par("Andrey"{}, NameParent, "w"{}) & Child = "Andrey"{}\\
+            7 &  "w"{}, \_) и grand(Child & & par(NameParent, NameGrand, Sex) & Line = "w"{} \\
+              & NameGrand, Line, Sex) & &  &\\
+			\hline
+              & par("Andrey"{}, NameParent, "w"{}) & Прямой ход & par("Andrey"{}, NameParent, "w"{}) & Child = "Andrey"{}\\
+            8 & par("Andrey"{}, "Boris"{}, "m"{}) & Переход к & par(NameParent, NameGrand, Sex) & Line = "w"{} \\
+			  & Не унифицируемы & след. предл. & & \\
+			\hline
+              & par("Andrey"{}, NameParent, "w"{}) & Прямой ход & par("Daria"{}, & Child = "Andrey"{}\\
+            9 & par("Andrey"{}, "Daria"{}, "w"{}) & & NameGrand, Sex), & Line = "w"{} \\
+              &  & & & NameParent = "Daria"{}\\
+            \hline
+              & par("Daria"{}, NameGrand, Sex) & Прямой ход & par("Daria"{}, NameGrand, Sex) & Child = "Andrey"{}\\
+            10 & par("Andrey"{}, "Boris"{}, "m"{}) & Переход к & & Line = "w"{} \\
+              & Не унифицируемы & след. предл. & & NameParent = "Daria"{}\\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+            \hline
+              & par("Daria"{}, NameGrand, Sex) & Нашли ответ & par("Daria"{}, NameGrand, Sex) & Child = "Andrey"{}\\
+            14 & par("Daria"{}, "Fedor"{}, "m"{}) & & & Line = "w"{} \\
+              & & & & NameParent = "Daria"{}\\
+              & & & & NameGrand = "Fedor"{}\\
+            \hline
+              & par("Daria"{}, NameGrand, Sex) & Нашли ответ & par("Daria"{}, NameGrand, Sex) & Child = "Andrey"{}\\
+            15 & par("Daria"{}, "Julia"{}, "m"{}) & & & Line = "w"{} \\
+              & & & & NameParent = "Daria"{}\\
+              & & & & NameGrand = "Julia"{}\\
+            \hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+              & par("Andrey"{}, NameParent, "w"{}) & Завершение & par("Andrey"{}, NameParent, "w"{}) & Child = "Andrey"{} \\
+            21 &grand(Child, NameGrand, & работы & & Line = "w" \\
+              & Line, Sex) & 2 подст. & & \\
+              & Главные функторы не равны & в рез-те & & \\
+    \end{longtable}
+\end{landscape}

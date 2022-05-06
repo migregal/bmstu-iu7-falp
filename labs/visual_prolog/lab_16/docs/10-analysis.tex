@@ -1,0 +1,152 @@
+\chapter{Практическая часть}
+
+\textbf{Задание 15:} Используя хвостовую рекурсию, разработать программу, позволяющую найти:
+\begin{itemize}
+    \item n!;
+    \item n-е число Фибоначчи.
+\end{itemize}
+Убедиться в правильности результатов.
+
+Для одного из вариантов \textbf{ВОПРОСА} и каждого задания составить таблицу, отражающую конкретный порядок работы системы:
+
+Т.к. резольвента хранится в виде стека, то состояние резольвенты требуется отображать в столбик: вершина – сверху! Новый шаг надо начинать с нового состояния резольвенты!
+
+
+\listingfile{fibonacci_tail.pro}{1-1}{Prolog}{Реализация вычисления числа Фибоначчи}{linerange={1-21}}
+
+В Таблице \ref{tbl:1-1} представлен порядок поиска ответа на вопрос 1.
+
+\begin{landscape}
+    \setlength{\LTcapwidth}{\linewidth}
+    \begin{longtable}{|c|c|c|c|c|}
+        \caption[Порядок формирования результата для 1-го вопроса]{Порядок формирования результата для 1-го вопроса} \label{tbl:1-1}\\
+    
+        \hline
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\
+        \endfirsthead
+    
+        \multicolumn{5}{l}
+        {{\tablename\ \thetable{} -- продолжение}} \\
+        \hline 
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\\hline
+        \endhead
+        
+        \hline \multicolumn{5}{|r|}{{Продолжение на следующей странице}} \\ \hline
+        \endfoot
+        
+        \hline \multicolumn{5}{|r|}{{Конец таблицы}} \\ \hline
+        \endlastfoot
+        
+        \hline
+              & fib(10, R) & Прямой ход & fib(10, R) & \\
+            1 & и fib(0, 0) & Переход к & &\\
+			  & Не унифицируемы & след. предл. & &\\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+			3 & fib(10, R) & Прямой ход & fib(10, 0, 1, R) & N = 10\\
+              & и fib(N, Result) & & &\\
+            \hline
+			\dots & \dots & \dots & \dots & \dots \\
+		    \hline 
+			  & fib(10, 0, 1, R) & Прямой ход & 10 > 0 & N = 10\\
+            8 & и fib(N, Prev1, Prev2, Result) & & New\_Prev2 is 0 + 1 & Prev1 = 0\\
+              & & & N1 is 10 - 1 & Prev2 = 1\\
+              & & & fib(N1, 1, New\_Prev2, Result) &\\
+            \hline 
+			  & & Прямой ход & New\_Prev2 is 0 + 1 & N = 10\\
+            9 & 10 > 0 & & N1 is 10 - 1 & Prev1 = 0\\
+              & & & fib(N1, 1, New\_Prev2, Result) & Prev2 = 1\\
+            \hline 
+			10 & New\_Prev2 is 0 + 1 & Прямой ход & N1 is N - 1 & N = 10\\
+              & & & fib(N1, 1, 1, Result) & Prev1 = 0\\
+              & & & & Prev2 = 1\\
+              & & & & New\_Prev2 = 1\\
+            \hline 
+			11 & N1 is 9 - 1 & Прямой ход & fib(9, 1, 1, Result) & N = 10\\
+              & & & & Prev1 = 0\\
+              & & & & Prev2 = 1\\
+              & & & & N1 = 9\\
+            \hline
+			\dots & \dots & \dots & \dots & \dots \\
+            \hline 
+			16 & fib(9, 1, 1, Result) & Прямой ход & 9 > 0 & N = 9\\
+              & и fib(N, Prev1, Prev2, Result) & & New\_Prev2 is 1 + 1 & Prev1 = 1\\
+              & & & N1 is 9 - 1 & Prev2 = 1\\
+              & & & fib(N1, 1, New\_Prev2, Result) & \\
+            \hline 
+			79 & fib(0, 55, 89, Result) & Прямой ход & ! & N = 55\\
+              & и fib(0, N, \_, N) & & & \\
+			\hline
+            80  & ! & Завершение & & R = 55 \\
+              & & работы & &\\
+              & & 1 подст. & & \\
+              & & в рез-те & & \\
+    \end{longtable}
+\end{landscape}
+
+\listingfile{factorial_tail.pro}{1-1}{Prolog}{Реализация базы знаний}{linerange={1-17}}
+
+В Таблице \ref{tbl:1-2} представлен порядок поиска ответа на вопрос 1.
+
+\begin{landscape}
+    \setlength{\LTcapwidth}{\linewidth}
+    \begin{longtable}{|c|c|c|c|c|}
+        \caption[Порядок формирования результата для 1-го вопроса]{Порядок формирования результата для 1-го вопроса} \label{tbl:1-2}\\
+    
+        \hline
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\
+        \endfirsthead
+    
+        \multicolumn{5}{l}
+        {{\tablename\ \thetable{} -- продолжение}} \\
+        \hline 
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\\hline
+        \endhead
+        
+        \hline \multicolumn{5}{|r|}{{Продолжение на следующей странице}} \\ \hline
+        \endfoot
+        
+        \hline \multicolumn{5}{|r|}{{Конец таблицы}} \\ \hline
+        \endlastfoot
+        
+        \hline
+              & fact(10, R) & Прямой ход & fact(10, R) & \\
+            1 & и fact(0, 0, R) & Переход к & &\\
+			  & Не унифицируемы & след. предл. & &\\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+			3 & fact(10, R) & Прямой ход & fact(10, 1, R) & N = 10\\
+              & и fact(N, R) & & &\\
+            \hline
+			\dots & \dots & \dots & \dots & \dots \\
+		    \hline 
+			  & fact(10, 1, R) & Прямой ход & NewN is 10 - 1 & N = 10\\
+            5 & и fact(N, Acc, R) & & NewAcc is 1 * 10 & Acc = 1\\
+              & & & fact(NewN, NewAcc, R) & \\
+            \hline 
+			6 & NewN is 10 - 1 & Прямой ход & NewAcc is 1 * 10 & N = 10\\
+              & & & fact(9, NewAcc, R) & Acc = 1\\
+              & & & & NewN = 9\\
+            \hline 
+			7 & NewAcc is 1 * 10 & Прямой ход & fact(9, 10, R) & N = 10\\
+              & & & & Acc = 1\\
+              & & & & NewN = 10\\
+              & & & & NewAcc = 10\\
+            \hline
+			\dots & \dots & \dots & \dots & \dots \\
+            \hline 
+			46 & fact(0, 3628800, R) & Прямой ход & ! & N = 0\\
+               & fact(0, R, R) & & & R = 3628800\\
+			\hline
+            47 & ! & Завершение & & R = 3628800 \\
+              & & работы & &\\
+              & & 1 подст. & & \\
+              & & в рез-те & & \\
+    \end{longtable}
+\end{landscape}

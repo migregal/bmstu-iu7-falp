@@ -1,0 +1,106 @@
+\chapter{Практическая часть}
+
+\textbf{Задание 13:} составить программу, то есть модель предметной области – базу знаний, объединив в ней информацию – знания:
+
+\begin{itemize}
+    \item <<Телефонный справочник>>: Фамилия, №тел, Адрес – структура (Город, Улица, №дома, №кв)
+    \item <<Автомобили>>: Фамилия\_владельца, Марка, Цвет, Стоимость и др.
+    \item <<Вкладчики банков>>: Фамилия, Банк, счет, сумма, др.
+\end{itemize}
+
+Владелец может иметь несколько телефонов, автомобилей, вкладов (Факты).
+Используя правила, обеспечить возможность поиска:
+
+
+\begin{enumerate}
+    \item A. По № телефона найти: Фамилию, Марку автомобиля, Стоимость автомобиля (может быть несколько)
+
+        B. Используя сформированное в предыдущем пункте правило, по №телефона найти только Марку автомобиля (автомобилей может быть несколько)
+
+    \item Используя простой, не составной вопрос: по Фамилии (уникальна в городе, но в разных городах есть однофамильцы) и Городу проживания найти: Улицу, проживания, Банки, в которых есть вклады и №телефона.
+\end{enumerate}
+
+Для задания 1 и 2 для одного из вариантов ответов, и для A. и для B., описать словесно порядок поиска ответа на вопрос, указав, как выбираются знания, и, при этом, для каждого этапа унификации, выписать подстановку – наибольший общий унификатор, и соответствующие примеры термов.
+
+\listingfile{main.pro}{1-1}{Prolog}{Реализация базы знаний, Часть 1}{linerange={1-45}}
+
+\clearpage
+
+\listingfile{main.pro}{1-2}{Prolog}{Реализация базы знаний, Часть 1}{linerange={47-68}, firstnumber=47}
+
+В Таблице \ref{tbl:1-1} представлен порядок поиска ответа на вопрос 2.
+
+\begin{landscape}
+    \setlength{\LTcapwidth}{\linewidth}
+    \begin{longtable}{|c|c|c|c|c|}
+        \caption[Порядок формирования результата для 1-го вопроса]{Порядок формирования результата для 1-го вопроса} \label{tbl:1-1}\\
+    
+        \hline
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\
+        \endfirsthead
+    
+        \multicolumn{5}{l}
+        {{\tablename\ \thetable{} -- продолжение}} \\
+        \hline 
+            Шаг & Сравниваемые термы; & Дальнейшие & Резольвента & Подстановка \\
+                & результаты & действия & & \\\hline
+        \endhead
+        
+        \hline \multicolumn{5}{|r|}{{Продолжение на следующей странице}} \\ \hline
+        \endfoot
+        
+        \hline \multicolumn{5}{|r|}{{Конец таблицы}} \\ \hline
+        \endlastfoot
+        
+        \hline
+              & own\_price("Fedorov"{}, PropType, & Прямой ход & own\_price("Fedorov"{}, & \\
+              & Price) и person("Andreev"{}, & Переход к & PropType, Price) &\\
+            1 & "+79999999999"{}, & след. предл. & &\\
+			  & addr("Moscow"{}, "Lesnaya"{}, 12, 2)). & & & \\
+			  & Главные функторы не равны & & & \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+              & own\_price("Fedorov"{}, PropType, & Прямой ход & own("Fedorov"{}, & L = "Fedorov"{} \\
+            20 & Price) и own\_price(L, & & building(Price, \_)) & PropType = building\\
+              & building, PropType) & & &\\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+              & own("Fedorov"{}, building(Price, \_)) & Нашли ответ &  & L = "Fedorov"{} \\
+            36 & и own("Fedorov"{}, & Откат & & PropType = building\\
+              &  building(200000, 120)) & & & Price=200000 \\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline 
+              & own\_price("Fedorov"{}, PropType, & Прямой ход & own("Fedorov"{}, & L = "Fedorov"{} \\
+            51 & Price) и own\_price(L, & & sector(Price, \_)) & PropType = sector\\
+              & sector, PropType) & & &\\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+              & own\_price("Fedorov"{}, PropType, & Прямой ход & own("Fedorov"{}, & L = "Fedorov"{} \\
+            77 & Price) и own\_price(L, & & ship(Price, \_)) & PropType = ship\\
+              & ship, PropType) & & &\\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+              & own\_price("Fedorov"{}, PropType, & Прямой ход & own("Fedorov"{}, & L = "Fedorov"{} \\
+            103 & Price) и own\_price(L, & & car(\_, \_, Price)) & PropType = car\\
+              & car, PropType) & & &\\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+              & own("Fedorov"{}, car(\_, \_, & Нашли ответ & & L = "Fedorov"{} \\
+            112 & Price)) и own("Fedorov"{}, & Откат & & PropType = car\\
+              & car("lada"{}, "black"{}, 20000)) & & & Price = 20000\\
+			\hline
+			\dots & \dots & \dots & \dots & \dots \\
+			\hline
+              & own\_price("Fedorov"{}, PropType, & Завершение & own\_price("Fedorov"{}, & \\
+            130 & Price) и total\_price(L, & работы & PropType, Price) & \\
+              & Total)) & 2 подст. & & \\
+              & Главные функторы не равны & в рез-те & & \\
+    \end{longtable}
+\end{landscape}

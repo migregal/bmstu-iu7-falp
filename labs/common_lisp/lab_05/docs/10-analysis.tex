@@ -1,0 +1,198 @@
+\chapter{Практическая часть}
+
+\section{Написать функцию, которая по своему аргументу-списку \texttt{lst} определяет, является ли он полиндромом (то есть равны ли \texttt{lst} и \texttt{(reverse lst)})}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, проверяющая, является ли список палиндромом},
+	label={lst:1-1},
+	language={Lisp},
+]
+(defun polyndromp-reverse (lst)
+  (equal lst (reverse lst)))
+\end{lstlisting}
+
+\section{Написать предикат \texttt{set-equal}, который возвращает \texttt{t}, если два его множества-аргумента содержат одни и те же элементы, порядок которых не имеет значения}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация set-equal с использованием subsetp},
+	label={lst:2-1},
+	language={Lisp},
+]
+(defun set-equal-subset (lst1 lst2)
+    (cond ((subsetp lst2 lst1) (subsetp lst1 lst2))))
+\end{lstlisting}
+
+\section{Напишите свои необходимые функции, которые обрабатывают таблицу из точечных пар: \texttt{(страна . столица)}, и возвращают по стране столицу, а по столице -- страну}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация указанных функций с использованием assoc/rassoc},
+	label={lst:3-1},
+	language={Lisp},
+]
+(defun get-cptl-assoc (cntry tbl)
+  (let ((pair (assoc cntry tbl :test 'equal)))
+    (cond (pair (cdr pair)))))
+
+(defun get-cntry-assoc (cptl tbl)
+  (let ((pair (rassoc cptl tbl :test 'equal)))
+    (cond (pair (car pair)))))
+\end{lstlisting}
+
+\section{Напишите функцию \texttt{swap-first-last}, которая переставляет в списке аргументе первый и последний элементы}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, переставляющая местами первый и последний элемент списка},
+	label={lst:4-2},
+	language={Lisp},
+]
+(defun swap-first-last (lst)
+  (let ((el1 (car lst)) (last-el (car (last lst))))
+    (nreverse
+      (cons el1 (cdr (reverse (cons last-el (cdr lst))))))))
+\end{lstlisting}
+
+\section{Напишите функцию \texttt{swap-two-ellement}, которая переставляет в списке-аргументе два указанных своими порядковыми номерами элемента в этом списке}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, переставляющая местами два элемента списка},
+	label={lst:5-1},
+	language={Lisp},
+]
+(defun replace-nth (lst i newelem)
+  (cond
+    ((null lst) nil)
+    ((zerop i) (cons newelem (cdr lst)))
+    ((cons (car lst) (replace-nth (cdr lst) (- i 1) newelem)))))
+
+(defun swap-two-ellement (i1 i2 lst)
+  (cond
+    ((= i1 i2) lst)
+    ((replace-nth
+      (replace-nth lst i2 (nth i1 lst))
+      i1
+      (nth i2 lst)))))
+\end{lstlisting}
+
+\section{Напишите две функции, \texttt{swap-to-left} и \texttt{swap-to-right}, которые производят круговую перестановку в списке-аргументе влево и вправо, соответственно}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация функции циклического сдвига влево},
+	label={lst:6-1},
+	language={Lisp},
+]
+(defun swap-to-left (lst)
+  (cond
+    (lst (let ((tail (cdr lst)) (head (car lst)))
+         (nreverse (cons head (reverse tail)))))))
+\end{lstlisting}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация функции циклического сдвига вправо},
+	label={lst:6-2},
+	language={Lisp},
+]
+(defun swap-to-right (lst)
+  (cond
+    (lst (let ((last-el (car (last lst))))
+         (nreverse (cdr (reverse (cons last-el lst))))))))
+\end{lstlisting}
+
+\section{Напишите функцию, которая добавляет к множеству двухэлементных списков новый двухэлементный список, если его там нет}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, добавляющая элемент в список при его отсутствии},
+	label={lst:7-1},
+	language={Lisp},
+]
+(defun insert (lst ins)
+  (cond
+    ((member ins lst :test `equal) lst)
+    ((cons ins lst))))
+\end{lstlisting}
+
+\section{Напишите функцию, которая умножает на заданное число-аргумент все числа из заданного списка-аргумента, когда...}
+
+\subsection{а) все элементы списка -- числа}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, умножающая каждый элемент списка на число},
+	label={lst:8-1},
+	language={Lisp},
+]
+(defun mult-all-numbers (mult lst)
+  (mapcar #'(lambda (el) (* el mult)) lst))
+\end{lstlisting}
+
+\subsection{б) элементы списка -- любые объекты}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Функция, умножающая каждое число из списка на число},
+	label={lst:8-2},
+	language={Lisp},
+]
+(defun compl-mult-all-numbers (mult lst)
+  (mapcar
+    #'(lambda (el)
+        (cond ((listp el) (compl-mult-all-numbers mult el))
+              ((* el mult))))
+    lst))
+\end{lstlisting}
+
+\section{Напишите функцию, \texttt{select-between}, которая из списка-аргумента, содержащего только числа, выбирает только те, которые расположены между двумя указанными границами-аргументами и возвращает их в виде списка (упорядоченного по возрастанию списка чисел)}
+
+\begin{lstlisting} [
+	float=h!,
+	frame=single,
+	numbers=left,
+	abovecaptionskip=-5pt,
+	caption={Реализация select-between},
+	label={lst:9-1},
+	language={Lisp},
+]
+(defun get-n (n lst acc)
+  (cond ((or (null lst) (<= n 0)) acc)
+  ((get-n (1- n) (cdr lst) (cons (car lst) acc)))))
+
+(defun select-between (from to lst)
+  (sort (get-n (1+ (- to from)) (nthcdr from lst) Nil) #'<))
+\end{lstlisting}
